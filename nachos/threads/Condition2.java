@@ -28,16 +28,19 @@ public class Condition2 {
 	 * Atomically release the associated lock and go to sleep on this condition
 	 * variable until another thread wakes it using <tt>wake()</tt>. The current
 	 * thread must hold the associated lock. The thread will automatically
-	 * reacquire the lock before <tt>sleep()</tt> returns.
+	 * re-acquire the lock before <tt>sleep()</tt> returns.
 	 */
 	public void sleep() {
 		Lib.assertTrue(conditionLock.isHeldByCurrentThread());
-		conditionLock.release();
-		boolean status= Machine.interrupt().disable();
 		waitQueue.add(KThread.currentThread());
+		boolean status= Machine.interrupt().disable();
+		
+		conditionLock.release();
 		KThread.sleep();
-		Machine.interrupt().restore(status);
 		conditionLock.acquire();
+		
+		Machine.interrupt().restore(status);
+
 	}
 
 	/**
@@ -47,12 +50,17 @@ public class Condition2 {
 	public void wake() {
 		Lib.assertTrue(conditionLock.isHeldByCurrentThread());
 		boolean status= Machine.interrupt().disable();
+		
 		if(!waitQueue.isEmpty()) {
 			KThread temp=waitQueue.remove(0);
 			if(temp!=null) {
-				temp.ready();
+				boolean flag=ThreadedKernel.alarm.cancel(temp);
+				if(!flag) {
+					temp.ready();
+				}
 			}
 		}
+		
 		Machine.interrupt().restore(status);
 	}
 
@@ -63,22 +71,36 @@ public class Condition2 {
 	public void wakeAll() {
 		Lib.assertTrue(conditionLock.isHeldByCurrentThread());
 		boolean status= Machine.interrupt().disable();
+		
 		while(!waitQueue.isEmpty()) {
 			wake();
 		}
+		
 		Machine.interrupt().restore(status);
 	}
 
-        /**
+    /**
 	 * Atomically release the associated lock and go to sleep on
 	 * this condition variable until either (1) another thread
 	 * wakes it using <tt>wake()</tt>, or (2) the specified
 	 * <i>timeout</i> elapses.  The current thread must hold the
-	 * associated lock.  The thread will automatically reacquire
+	 * associated lock.  The thread will automatically re-acquire
 	 * the lock before <tt>sleep()</tt> returns.
 	 */
         public void sleepFor(long timeout) {
 		Lib.assertTrue(conditionLock.isHeldByCurrentThread());
+		boolean status= Machine.interrupt().disable();
+		conditionLock.release();
+		KThread temp=KThread.currentThread();
+		// we need to add it inside the CV queue, cuz if someone wake it up, it will be pushed out of the CV queue
+		waitQueue.add(temp);
+		ThreadedKernel.alarm.waitUntil(timeout);
+		// if timeout, the thread will still in the waitQueue, we need to push it out
+		if(waitQueue.contains(temp)) {
+			waitQueue.remove(temp);
+		}
+		conditionLock.acquire();
+		Machine.interrupt().restore(status);
 	}
 
         private Lock conditionLock;

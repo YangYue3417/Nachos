@@ -71,7 +71,7 @@ public class Alarm {
 	 */
 	public void waitUntil(long x) {
 		// for now, cheat just to get something working (busy waiting is bad)
-		
+		if(x<=0) return;
 		boolean threadstatus=Machine.interrupt().disable();
 		//System.out.println("Who is waiting: "+KThread.currentThread().getName());
 		long wakeTime = Machine.timer().getTime() + x;
@@ -95,11 +95,11 @@ public class Alarm {
 		}
 		KThread.sleep();
 		Machine.interrupt().restore(threadstatus);
-		Machine.interrupt().enable();
+		//Machine.interrupt().enable();
 	}
 	
 
-        /**
+    /**
 	 * Cancel any timer set by <i>thread</i>, effectively waking
 	 * up the thread immediately (placing it in the scheduler
 	 * ready set) and returning true.  If <i>thread</i> has no
@@ -108,11 +108,18 @@ public class Alarm {
 	 * <p>
 	 * @param thread the thread whose timer should be cancelled.
 	 */
-        public boolean cancel(KThread thread) {
-		return false;
+	public boolean cancel(KThread thread) {
+		boolean threadstatus=Machine.interrupt().disable();
+		boolean flag=waitqueue.remove(thread);
+		if(flag) {
+			thread.ready();
+		}
+		Machine.interrupt().restore(threadstatus);
+		return flag;
+		
 	}
     /************************ TESTING *************************/
-    private static class AlarmTestA implements Runnable{
+	private static class AlarmTestA implements Runnable{
 		int counter=0;
 		String name=null;
 		AlarmTestA(int temp, String n){

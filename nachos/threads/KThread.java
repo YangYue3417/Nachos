@@ -117,6 +117,7 @@ public class KThread {
 	public String getName() {
 		return name;
 	}
+	
 
 	/**
 	 * Get the full name of this thread. This includes its name along with its
