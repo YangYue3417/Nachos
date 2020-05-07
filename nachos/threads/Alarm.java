@@ -139,15 +139,9 @@ public class Alarm {
 		
 	}
 	
-	public static void selfTest() {
-		System.out.println("\n**********Alarm Test Start**********");
-		testCase1();
-		testCase2();
-		testCase3();
-		testCase4();
-	}
+
 	
-	public static void testCase1() {
+	public static void alarmTestCase1() {
 		System.out.println("\n**********Alarm TESTCASE 1**********");
 		long time=20000;
 		long time1=Machine.timer().getTime();
@@ -156,7 +150,7 @@ public class Alarm {
 		System.out.println(KThread.currentThread().toString()+" works again at: "+ Machine.timer().getTime() +" acturally sleep: "+(Machine.timer().getTime()-time1));
 	}
 	
-	public static void testCase2() {
+	public static void alarmTestCase2() {
 		System.out.println("\n**********Alarm TESTCASE 2**********");
 		long time=10;
 		for(int i=0;i<5;i++) {
@@ -171,7 +165,7 @@ public class Alarm {
 		
 	}
 	
-	public static void testCase3() {
+	public static void alarmTestCase3() {
 		System.out.println("\n**********Alarm TESTCASE 3**********");
 		// Mutiple threads wait at different or same time
 		for(int i=0;i<20;i++) {
@@ -182,7 +176,8 @@ public class Alarm {
 
 	}
 	
-	public static void testCase4() {
+	public static void alarmTestCase4() {
+		System.out.println("\n**********Alarm TESTCASE 4**********");
 		int durations[] = {1000, 10*1000, 100*1000};
 		long t0, t1;
 
@@ -193,5 +188,25 @@ public class Alarm {
 		    System.out.println ("alarmTest1: waited for " + (t1 - t0) + " ticks");
 		}
 	}
-        
+
+	public static void alarmTestCase5(){
+		System.out.println("\n**********Alarm TESTCASE 5**********");
+		int d = -1290831;
+		long t0, t1;
+
+		t0 = Machine.timer().getTime();
+		ThreadedKernel.alarm.waitUntil (d);
+		t1 = Machine.timer().getTime();
+		System.out.println ("input wait time: "+d+". actually waited for " + (t1 - t0) + " ticks");
+	}
+
+
+	public static void selfTest() {
+		System.out.println("\n**********Alarm Test Start**********");
+		alarmTestCase1();
+		alarmTestCase2();
+		alarmTestCase3();
+		alarmTestCase4();
+		alarmTestCase5();
+	}
 }

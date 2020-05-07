@@ -299,7 +299,7 @@ public class KThread {
 		Lib.debug(dbgThread, "Joining to thread: " + toString());
 		Lib.assertTrue(this != currentThread);
 		Lib.assertTrue(this.jointhread==null);
-		Lib.assertTrue(currentThread.jointhread!=this);
+		Lib.assertTrue((currentThread.jointhread!=this),"Have the deadlock risk!");
 		if(this.status==statusFinished) return;
 		boolean threadstatus=Machine.interrupt().disable();
 		this.jointhread = currentThread;
@@ -775,7 +775,7 @@ public class KThread {
 		testCase8();
 		testCase9();
 		testCase10();
-		//testCase11();
+//		testCase11();
 		testCase12();
 	}
 
