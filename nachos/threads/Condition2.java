@@ -212,7 +212,47 @@ public class Condition2 {
             producer.join();
             //for (int i = 0; i < 50; i++) { KThread.currentThread().yield(); }
         }
-        
+
+        public static void sleepTest1(){
+//			verify that sleep blocks the calling thread;
+		}
+
+		public static void wakeTest1(){
+//			wake wakes up at most one thread, even if multiple threads are waiting;
+		}
+
+		public static void wakeAllTest(){
+//			wakeAll wakes up all waiting threads;
+		}
+
+		public static void callWOSyncLockTest(){
+//			if a thread calls any of the synchronization methods
+//			without holding the lock, Nachos asserts
+		}
+
+		public static void wakeLostTest(){
+//			wake and wakeAll with no waiting threads have no effect,
+//			yet future threads that sleep will still block
+//			(i.e., the wake/wakeAll is "lost", which is in contrast to the semantics of semaphores).
+		}
+
+        public static void sleepForTest1(){
+//			a thread that calls sleepFor will timeout and return after x ticks
+//			if no other thread calls wake to wake it up
+
+
+		}
+
+		public static void sleepForTest2(){
+//			a thread that calls sleepFor will wake up and return
+//			if another thread calls wake before the timeout expires;
+		}
+
+		public static void sleepForTest3(){
+//			sleepFor handles multiple threads correctly
+//			(e.g., different timeouts, all are woken up with wakeAll)
+		}
+
         public static void selfTest() {
     		System.out.println("\n**********Condition2 Test Start**********");
             new InterlockTest();

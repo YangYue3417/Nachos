@@ -31,4 +31,26 @@ public class Rendezvous {
     public int exchange (int tag, int value) {
 	return 0;
     }
+
+    public static void exchSyncTest(){
+//        a thread only returns from exchange when another thread synchronizes with it
+    }
+
+    public static void exchReternTest(){
+//        exchange returns the exchanged values from the threads properly;
+    }
+
+    public static void nTo1Test(){
+//        many threads can call exchange on the same tag,
+//        and exchange will correctly pair them up and exchange their values;
+    }
+
+    public static void independenceTest(){
+//        threads exchanging values on different tags operate independently of each other
+    }
+
+    public static void diffInstanceTest(){
+//        threads exchanging values on different instances
+//        of Rendezvous operate independently of each other.
+    }
 }
