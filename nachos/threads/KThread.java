@@ -39,6 +39,9 @@ import nachos.machine.*;
  * </blockquote>
  */
 public class KThread {
+	public long waketime=0;
+	private static ThreadQueue joinQueue = ThreadedKernel.scheduler.newThreadQueue(true);
+	public boolean joinornot=false;
 	/**
 	 * Get the current thread.
 	 * 
@@ -200,10 +203,13 @@ public class KThread {
 
 		Lib.assertTrue(toBeDestroyed == null);
 		toBeDestroyed = currentThread;
-
 		currentThread.status = statusFinished;
-
-		sleep();
+		// since the joinqueue will only have 0/1 thread
+		// we only need to let it call ready() if it is not null
+		
+		KThread temp=joinQueue.nextThread();
+		if(temp!=null) temp.ready();
+		KThread.sleep();
 	}
 
 	/**
@@ -281,9 +287,24 @@ public class KThread {
 	 * is not guaranteed to return. This thread must not be the current thread.
 	 */
 	public void join() {
+		// A calls B.join() which means A is the currentthread, B is this in join() method.
+		// we need to set a joinQueue and a flag joinornot for each thread to record the thread who is waiting for him
+		// and the times they call join() (which should be 0/1 ture/flase)
+		
 		Lib.debug(dbgThread, "Joining to thread: " + toString());
-
 		Lib.assertTrue(this != currentThread);
+		Lib.assertTrue(joinornot==false);
+		if(this.status==statusFinished) return;
+		boolean threadstatus=Machine.interrupt().disable();
+		joinornot=true;
+		//System.out.println("The current thread is: "+ currentThread.getName()+ " The join thread is: "+ this.getName());
+		//joinQueue.acquire(this);
+		joinQueue.waitForAccess(currentThread);
+		KThread.sleep();// sleep will always sleep the current thread no need to call currentThread.sleep()
+
+		//this.joinornot=true;
+
+		Machine.interrupt().restore(threadstatus);
 
 	}
 
@@ -410,11 +431,145 @@ public class KThread {
 	/**
 	 * Tests whether this module is working.
 	 */
+	/************************ TESTING *************************/
+	private static class JoinTestA implements Runnable {
+		KThread jointhread;
+		JoinTestA(KThread thread){
+			jointhread=thread;
+		}
+		public void run() {
+			System.out.println("Before join, the time now is: "+ Machine.timer().getTime());
+			jointhread.join();
+			System.out.println("After join the thread "+ jointhread.name+ " the time now is: "+ Machine.timer().getTime());
+		}
+	}
+	
+	private static class JoinTestB implements Runnable{
+		public void run() {
+			System.out.println("The joined thread is running");
+		}
+	}
+	
+	private static class JoinTestC implements Runnable{
+		public void run() {
+			long sleeptime=1000;
+			long temp=Machine.timer().getTime();
+			System.out.println("C thread is running, the time now is: "+ temp+ " C thread should wait "+ sleeptime +" tickets");
+			ThreadedKernel.alarm.waitUntil(sleeptime);
+			System.out.println("the time now is: "+ Machine.timer().getTime()+" C has been waiting for "+ (Machine.timer().getTime()-temp)+ " tickets");
+			
+		}
+		
+	}
+	
+	private static class JoinTestD implements Runnable{
+		KThread temp1;
+		KThread temp2;
+		JoinTestD(KThread thread1, KThread thread2){
+			this.temp1=thread1;
+			this.temp2=thread2;
+		}
+		public void run() {
+			System.out.println("Before " + temp1.getName()+ " join, the time now is: "+ Machine.timer().getTime());
+			temp1.join();
+			System.out.println("After join the thread "+ temp1.name+ " the time now is: "+ Machine.timer().getTime());
+			
+			System.out.println("Before " + temp2.getName()+ " join, the time now is: "+ Machine.timer().getTime());
+			temp2.join();
+			System.out.println("After join the thread "+ temp2.name+ " the time now is: "+ Machine.timer().getTime());
+		}
+	}
+	
 	public static void selfTest() {
-		Lib.debug(dbgThread, "Enter KThread.selfTest");
-
-		new KThread(new PingTest(1)).setName("forked thread").fork();
-		new PingTest(0).run();
+		System.out.println("\n**********Join Test Start**********");
+//		Lib.debug(dbgThread, "Enter KThread.selfTest");
+//		new KThread(new PingTest(0)).setName("forked thread").fork();
+//		new PingTest(0).run();
+		
+		testCase1();
+		testCase2();
+		testCase3();
+		testCase4();
+		testCase5();
+		//testCase6();
+	}
+	
+	public static void testCase1() {
+		System.out.println("\n**********Join TESTCASE 1**********");
+	    Lib.debug(dbgThread, "Join Once");
+	    KThread B = new KThread(new JoinTestB());
+	    B.setName("Thread B");
+	    KThread A = new KThread(new JoinTestA(B));
+	    A.setName("Thread A");
+	    A.fork();
+	    B.fork();
+	    ThreadedKernel.alarm.waitUntil(2000);
+	}
+	
+	public static void testCase2() {
+		System.out.println("\n**********Join TESTCASE 2**********");
+		Lib.debug(dbgThread, "Join and Wait");
+		KThread C = new KThread(new JoinTestC());
+		KThread A2 = new KThread(new JoinTestA(C));
+		A2.setName("Thread A2").fork();
+		C.setName("Thread C").fork();
+		ThreadedKernel.alarm.waitUntil(2000);
+	}
+	
+	public static void testCase3() {
+		System.out.println("\n**********Join TESTCASE 3**********");
+		Lib.debug(dbgThread, "Mutiple Join");
+		// Since D will be finished after B1, when time comes to B2, the D's status is finish, so B2.join() will return directly.
+		KThread B1 = new KThread(new JoinTestB());
+		B1.setName("Thread B1");
+		KThread B2 = new KThread(new JoinTestA(B1));
+		B2.setName("Thread B2");
+		KThread A3 = new KThread(new JoinTestA(B2));
+		A3.setName("Thread D");
+		A3.fork();
+		B2.fork();
+		B1.fork();
+		ThreadedKernel.alarm.waitUntil(2000);
+	}
+	
+	public static void testCase4() {
+		System.out.println("\n**********Join TESTCASE 4**********");
+		Lib.debug(dbgThread, "Make thread finish before join");
+		KThread B3 = new KThread(new JoinTestB());
+		KThread A4 = new KThread(new JoinTestA(B3));
+		B3.setName("Thread B3").fork();
+		ThreadedKernel.alarm.waitUntil(20000);
+		A4.setName("Thread A4").fork();
+		ThreadedKernel.alarm.waitUntil(2000);
+	}
+	
+	public static void testCase5() {
+		System.out.println("\n**********Join TESTCASE 5**********");
+		Lib.debug(dbgThread, "Join and Join");
+		KThread B4 = new KThread(new JoinTestB());
+		KThread B5 = new KThread(new JoinTestB());
+		KThread D = new KThread(new JoinTestD(B4, B5));
+		D.setName("Thread D").fork();
+		B4.setName("Thread B4").fork();
+		B5.setName("Thread B5").fork();
+		ThreadedKernel.alarm.waitUntil(2000);
+	}
+	
+	public static void testCase6() {
+		// will cause assertion error
+		System.out.println("\n**********Join TESTCASE 5**********");
+		Lib.debug(dbgThread, "Join one thread");
+		KThread B4 = new KThread(new JoinTestB());
+		KThread B5 = B4;
+		KThread D = new KThread(new JoinTestD(B4, B5));
+		D.setName("Thread D").fork();
+		B4.setName("Thread B4").fork();
+		B5.setName("Thread B4-1").fork();
+		ThreadedKernel.alarm.waitUntil(2000);
+	}
+	
+	public static void testCase7() {
+		
 	}
 
 	private static final char dbgThread = 't';
