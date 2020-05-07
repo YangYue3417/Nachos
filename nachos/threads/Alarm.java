@@ -138,9 +138,7 @@ public class Alarm {
 		}
 		
 	}
-	
 
-	
 	public static void alarmTestCase1() {
 		System.out.println("\n**********Alarm TESTCASE 1**********");
 		long time=20000;
@@ -199,7 +197,6 @@ public class Alarm {
 		t1 = Machine.timer().getTime();
 		System.out.println ("input wait time: "+d+". actually waited for " + (t1 - t0) + " ticks");
 	}
-
 
 	public static void selfTest() {
 		System.out.println("\n**********Alarm Test Start**********");

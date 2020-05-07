@@ -488,7 +488,7 @@ public class KThread {
 	    A.setName("Thread A");
 	    A.fork();
 	    B.fork();
-	    ThreadedKernel.alarm.waitUntil(2000);
+//	    ThreadedKernel.alarm.waitUntil(2000);
 	}
 	
 	public static void testCase2() {
@@ -498,7 +498,7 @@ public class KThread {
 		KThread A2 = new KThread(new JoinTestA(C));
 		A2.setName("Thread A2").fork();
 		C.setName("Thread C").fork();
-		ThreadedKernel.alarm.waitUntil(2000);
+//		ThreadedKernel.alarm.waitUntil(2000);
 	}
 	
 	public static void testCase3() {
@@ -514,7 +514,7 @@ public class KThread {
 		A3.fork();
 		B2.fork();
 		B1.fork();
-		ThreadedKernel.alarm.waitUntil(2000);
+//		ThreadedKernel.alarm.waitUntil(2000);
 	}
 	
 	public static void testCase4() {
@@ -525,7 +525,7 @@ public class KThread {
 		B3.setName("Thread B3").fork();
 		ThreadedKernel.alarm.waitUntil(20000);
 		A4.setName("Thread A4").fork();
-		ThreadedKernel.alarm.waitUntil(2000);
+//		ThreadedKernel.alarm.waitUntil(2000);
 	}
 	
 	public static void testCase5() {
@@ -537,7 +537,7 @@ public class KThread {
 		D.setName("Thread D").fork();
 		B4.setName("Thread B4").fork();
 		B5.setName("Thread B5").fork();
-		ThreadedKernel.alarm.waitUntil(2000);
+//		ThreadedKernel.alarm.waitUntil(2000);
 	}
 	
 	public static void testCase6() {
@@ -550,7 +550,7 @@ public class KThread {
 		D.setName("Thread D").fork();
 		B4.setName("Thread B4").fork();
 		B5.setName("Thread B4-1").fork();
-		ThreadedKernel.alarm.waitUntil(2000);
+//		ThreadedKernel.alarm.waitUntil(2000);
 	}
 	
 	private static void testCase7() {
@@ -764,19 +764,103 @@ public class KThread {
 //		Lib.debug(dbgThread, "Enter KThread.selfTest");
 //		new KThread(new PingTest(0)).setName("forked thread").fork();
 //		new PingTest(0).run();
-		
-		testCase1();
-		testCase2();
-		testCase3();
-		testCase4();
-		testCase5();
-		//testCase6();
-		testCase7();
-		testCase8();
-		testCase9();
-		testCase10();
-//		testCase11();
-		testCase12();
+		Condition cv;
+		Lock lock = new Lock();
+		KThread tc1 = new KThread(new Runnable(){
+			public void run(){
+				testCase1();
+				KThread.yield();
+			}
+		});
+		KThread tc2 = new KThread(new Runnable(){
+			public void run(){
+				testCase2();
+				KThread.yield();
+			}
+		});
+		KThread tc3 = new KThread(new Runnable(){
+			public void run(){
+				testCase3();
+				KThread.yield();
+			}
+		});
+		KThread tc4 = new KThread(new Runnable(){
+			public void run(){
+				testCase4();
+				KThread.yield();
+			}
+		});
+		KThread tc5 = new KThread(new Runnable(){
+			public void run(){
+				testCase5();
+				KThread.yield();
+			}
+		});
+		KThread tc7 = new KThread(new Runnable(){
+			public void run(){
+				testCase7();
+				KThread.yield();
+			}
+		});
+		KThread tc8 = new KThread(new Runnable(){
+			public void run(){
+				testCase8();
+				KThread.yield();
+			}
+		});
+		KThread tc9 = new KThread(new Runnable(){
+			public void run(){
+				testCase9();
+				KThread.yield();
+			}
+		});
+		KThread tc10 = new KThread(new Runnable(){
+			public void run(){
+				testCase10();
+				KThread.yield();
+			}
+		});
+		KThread tc11 = new KThread(new Runnable(){
+			public void run(){
+				testCase11();
+				KThread.yield();
+			}
+		});
+		KThread tc12 = new KThread(new Runnable(){
+			public void run(){
+				testCase12();
+				KThread.yield();
+			}
+		});
+		tc1.fork();	tc1.join();
+		tc2.fork();	tc2.join();
+		tc3.fork();	tc3.join();
+		tc4.fork();	tc4.join();
+		tc5.fork();	tc5.join();
+		tc7.fork();	tc7.join();
+		tc8.fork();	tc8.join();
+		tc9.fork();	tc9.join();
+		tc10.fork(); tc10.join();
+//		tc11.fork(); tc11.join();
+		tc12.fork(); tc12.join();
+//		tc2.fork();
+//		tc2.join();
+//		tc1.fork();
+//		tc1.join();
+//		tc2.fork();
+//		tc2.join();
+//		testCase1();
+//		testCase2();
+//		testCase3();
+//		testCase4();
+//		testCase5();
+//		//testCase6();
+//		testCase7();
+//		testCase8();
+//		testCase9();
+//		testCase10();
+////		testCase11();
+//		testCase12();
 	}
 
 

@@ -178,7 +178,6 @@ public class Condition2 {
                             // context swith for the fun of it
                             System.out.println("Removed " + list.removeFirst());
                             KThread.yield();
-
                         }
                         lock.release();
                     }
@@ -217,6 +216,7 @@ public class Condition2 {
         public static void selfTest() {
     		System.out.println("\n**********Condition2 Test Start**********");
             new InterlockTest();
+			System.out.println("\n**********Consumer-Producer Test Start**********");
             cvTest5();
         }
 
