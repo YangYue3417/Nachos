@@ -1,0 +1,69 @@
+Haoyang Ding | A53320920 | KKDJOSEPH: 
+Finish part 1,2,3,4
+
+Part1: 
+waitUntil(long x): 
+1. If the wait-time<=0, return.
+2. Add 'waitqueue' for each Alarm object. Use the waitqueue to save the thread who calls waitUntil().
+3. Add 'waketime' for each KThread object. Use the waketime to save the thread's wake up time.
+3. Sort the thread inside the waitqueue by waketime. The thread with smaller wake time will have a smaller index.
+4. Sleep the thread who calls waitUntil() and wait for timeinterrupt to wake it up.
+
+timeInterrupt():
+1. If the waitqueue is empty, return.
+2. Remove the threads whose waketime<=currenttime And move these threads to the readyqueue.
+
+Part1 Test:
+testCase1: Test the basic function, only call the waitUntil() once.
+testCase2: Try to call the waitUntil() several times
+testCase3 and 4: Nested calling waitUntil()
+
+Part2:
+join()
+1. Add 'jointhread' for each KThread object. Use the jointhread to save the thread(currentthread) which should be finished after the thread(this) who calls the join() function.
+2. Add an assert: this.jointhread==null, assert that only one thread will wait for 'this' thread.
+3. Add an assert: this!=currentThread, or there will be a deadlock
+4. Add an assert: currentThread.jointhread!=this, or these two threads will wait for each other.
+5. if the thread is finished, return.
+6. use this.jointhread to save the currentthread and sleep() the currentthread
+
+finish()
+1. check if the currentthread has a jointhread waiting for it, set it ready().
+
+Part2 Test:
+testCase1: Basic function. Join Once.
+testCase2: join and wait together
+testCase3: call join() several times
+testCase4: Make thread finished before join to test the assertion
+testCase5: Nested join
+testCase6: Set a deadlock situation
+
+Part3:
+1. Add a waitqueue for condition2 object to save the thread who can not get the resource now.
+sleep()
+1. Add the currentthread inside the waitqueue, and sleep the currentthread.
+
+wake()
+1. Call the cancel() function. If the first thread inside the waitqueue is waiting which means it called sleepFor() before, wake it up and remove it from the alarm.waitqueue.
+2. If the first thread didn't call sleepFor() before, wake the first thread up.
+
+wakeAll()
+1. wake up all the threads inside the waitqueue
+
+Part3 Test:
+1. Use the given testcase to check the basic function
+2. Call the waitUntil(), join() with the methods inside the condition2 several times.
+
+Part4:
+sleepFor(long timeout)
+1. Add the currentthread inside the waitqueue
+2. call waitUntil(timeout)
+3. After waitUntil(), if the currentthread is still in the waitqueue, push it out(Timeout).
+
+cancel(KThread thread)
+1. Remove the thread 'thread' from the alarm.waitqueue which means that thread is no need to wait until its waketime, the resource it wants is available now.
+2. put the thread inside the readyqueue.
+3. if we can remove th 'thread' from the waitqueue, return true.
+
+Part4 Test:
+It's inside the part3's testcases.
