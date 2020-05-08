@@ -441,13 +441,13 @@ public class KThread {
 			System.out.println("After join the thread "+ jointhread.name+ " the time now is: "+ Machine.timer().getTime());
 		}
 	}
-	
+
 	private static class JoinTestB implements Runnable{
 		public void run() {
 			System.out.println("The joined thread is running");
 		}
 	}
-	
+
 	private static class JoinTestC implements Runnable{
 		public void run() {
 			long sleeptime=1000;
@@ -455,11 +455,11 @@ public class KThread {
 			System.out.println("C thread is running, the time now is: "+ temp+ " C thread should wait "+ sleeptime +" tickets");
 			ThreadedKernel.alarm.waitUntil(sleeptime);
 			System.out.println("the time now is: "+ Machine.timer().getTime()+" C has been waiting for "+ (Machine.timer().getTime()-temp)+ " tickets");
-			
+
 		}
-		
+
 	}
-	
+
 	private static class JoinTestD implements Runnable{
 		KThread temp1;
 		KThread temp2;
@@ -471,14 +471,14 @@ public class KThread {
 			System.out.println("Before " + temp1.getName()+ " join, the time now is: "+ Machine.timer().getTime());
 			temp1.join();
 			System.out.println("After join the thread "+ temp1.name+ " the time now is: "+ Machine.timer().getTime());
-			
+
 			System.out.println("Before " + temp2.getName()+ " join, the time now is: "+ Machine.timer().getTime());
 			temp2.join();
 			System.out.println("After join the thread "+ temp2.name+ " the time now is: "+ Machine.timer().getTime());
 		}
 	}
-	
-	
+
+
 	public static void testCase1() {
 		System.out.println("\n**********Join TESTCASE 1**********");
 	    Lib.debug(dbgThread, "Join Once");
@@ -553,211 +553,6 @@ public class KThread {
 		ThreadedKernel.alarm.waitUntil(2000);
 	}
 
-	private static void testCase7() {
-		System.out.println("\n**********Join TESTCASE 7**********");
-		KThread child1 = new KThread(new Runnable() {
-			public void run() {
-				System.out.println("I (heart) Nachos!");
-			}
-		});
-		child1.setName("child1").fork();
-
-		// We want the child to finish before we call join.  Although
-		// our solutions to the problems cannot busy wait, our test
-		// programs can!
-
-		for (int i = 0; i < 5; i++) {
-			System.out.println("busy...");
-			KThread.yield();
-		}
-		System.out.println("Before joining, child 1 should be finished.");
-		System.out.println("is it? " + (child1.status == statusFinished));
-		child1.join();
-		System.out.println("After joining, child1 should be finished.");
-		System.out.println("is it? " + (child1.status == statusFinished));
-		try {
-			Lib.assertTrue((child1.status == statusFinished), " Expected child1 to be finished.");
-		}
-		catch(Error e) {
-			System.out.println("***FAILED***");
-		}
-		System.out.println("***PASSED***");
-	}
-
-	/**
-	 * Test for the situation that current thread can call join on
-	 * multiple child threads in succession.
-	 */
-	private static void testCase8() {
-		// Create three child threads
-		System.out.println("\n**********Join TESTCASE 8**********");
-		KThread child1 = new KThread(new Runnable() {
-			public void run() {
-				System.out.println("I'm the first child!");
-			}
-		});
-		child1.setName("child1").fork();
-		System.out.println("Status 1: "+child1.status);
-		child1.join();
-		System.out.println("After joining, child1 should be finished.");
-		System.out.println("is it? " + (child1.status == statusFinished));
-		Lib.assertTrue((child1.status == statusFinished), " Expected child1 to be finished.");
-		KThread child2 = new KThread(new Runnable() {
-			public void run() {
-				System.out.println("I'm the second child!");
-			}
-		});
-              		child2.setName("child2").fork();
-		child2.join();
-		System.out.println("After joining, child2 should be finished.");
-		System.out.println("is it? " + (child2.status == statusFinished));
-		Lib.assertTrue((child2.status == statusFinished), " Expected child2 to be finished.");
-		KThread child3 = new KThread(new Runnable() {
-			public void run() {
-				System.out.println("I'm the third child!");
-			}
-		});
-		child3.setName("child3").fork();
-		child3.join();
-		System.out.println("After joining, child3 should be finished.");
-		System.out.println("is it? " + (child3.status == statusFinished));
-		Lib.assertTrue((child3.status == statusFinished), " Expected child3 to be finished.");
-		System.out.println("***PASSED***");
-	}
-
-	/**
-	 * Test for the situation that join is called on a thread
-	 * multiple times by the parent and nachos should assert.
-	 */
-
-	private static void testCase9() {
-		// Create the child
-		System.out.println("\n**********Join TESTCASE 9**********");
-		KThread child1 = new KThread(new Runnable() {
-			public void run() {
-				System.out.println("I can't be joined more than once!");
-			}
-		});
-		child1.setName("child1");
-		child1.fork();
-		child1.join();
-		boolean asserted = false;
-		try {
-			child1.join();
-		}
-		catch(Error e) {
-			asserted = true;
-			System.out.println("Asserted on multiple join on child 1");
-			System.out.println("***PASSED***");
-		}
-		finally {
-			try {
-				Lib.assertTrue(asserted);
-			} catch (Error e) {
-				System.out.println("***FAILED***");
-			}
-		}
-	}
-
-	/**
-	 * Test for the situation that join is called on a thread
-	 * multiple times by different threads and nachos should assert.
-	 */
-
-	private static void testCase10() {
-		System.out.println("\n**********Join TESTCASE 10**********");
-		// Create the child
-		KThread child1 = new KThread(new Runnable() {
-			public void run() {
-				System.out.println("I can't be joined more than once!");
-			}
-		});
-		child1.setName("child1");
-		// Create a thread that calls join on child1
-		KThread child2 = new KThread(new Runnable() {
-			public void run() {
-				child1.join();
-				System.out.println("Child 1 should be finished." + (child1.status == statusFinished));
-			}
-		});
-		child2.setName("child2");
-		child2.fork();
-		child1.fork();
-		// Busy wait on main
-		for (int i = 0; i < 5; i++) {
-			System.out.println("busy...");
-			KThread.yield();
-		}
-		// Main program call join on child 1 and this should trigger assert
-		boolean asserted = false;
-		try {
-			child1.join();
-		} catch (Error e) {
-			asserted = true;
-			System.out.println("Asserted on multiple join on child 1");
-		} finally {
-			try {
-				Lib.assertTrue(asserted);
-			} catch (Error e) {
-				System.out.println("***FAILED***");
-			} finally {
-				System.out.println("***PASSED***");
-			}
-		}
-	}
-
-	/**
-	 * Test for the situation that independent pairs of threads can join
-	 * with each other without interference.
-	 */
-	private static void testCase11() {
-		System.out.println("\n**********Join TESTCASE 11**********");
-		// Create a child thread
-		KThread main  = currentThread();
-		KThread child1 = new KThread(new Runnable() {
-			public void run() {
-				System.out.println("Join with the main thread");
-				System.out.println("Current Thread name: "+currentThread.name);
-				System.out.println("Current Thread join from name: "+currentThread.jointhread.name);
-				currentThread().jointhread.join();
-				System.out.println("Not Printed");
-				System.out.println(currentThread());
-				Lib.assertTrue(currentThread().status == statusFinished);
-			}
-		});
-		child1.setName("child1");
-		child1.fork();
-		child1.join();
-		try {
-			Lib.assertTrue(child1.status == statusBlocked);
-		} catch (Error e) {
-			System.out.println("***FAILED***");
-		}
-		System.out.println("child 1 called main.join in it's process. Main continues to execute.");
-		System.out.println("***PASSED***");
-	}
-
-	/**
-	 * Test for the situation that a thread calls join on itself
-	 * and nachos asserts.
-	 */
-
-	private static void testCase12() {
-		System.out.println("\n**********Join TESTCASE 12**********");
-		boolean asserted = false;
-		try {
-			currentThread().join();
-		} catch(Error e) {
-			asserted = true;
-			System.out.println("Nachos asserted on call join on itself");
-		}
-		try {
-			Lib.assertTrue(asserted);
-		} catch (Error e) {
-			System.out.println("***FAILED***");
-		}
-		System.out.println("***PASSED***");
-	}
 
 	public static void selfTest() {
 		System.out.println("\n**********Join Test Start**********");
@@ -771,12 +566,6 @@ public class KThread {
 		testCase4();
 		testCase5();
 		//testCase6();
-		testCase7();
-		testCase8();
-		testCase9();
-		testCase10();
-//		testCase11();
-		testCase12();
 	}
 
 

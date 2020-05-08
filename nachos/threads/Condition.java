@@ -1,8 +1,8 @@
 package nachos.threads;
 
 import nachos.machine.*;
-import nachos.threads.Condition2.InterlockTest;
-import nachos.threads.Condition2.InterlockTest.Interlocker;
+//import nachos.threads.Condition2.InterlockTest;
+//import nachos.threads.Condition2.InterlockTest.Interlocker;
 import java.util.LinkedList;
 
 /**
@@ -165,10 +165,10 @@ public class Condition {
     }
 
     public static void selfTest() {
-		System.out.println("\n**********Condition1 Test Start**********");
-        new InterlockTest();
-		System.out.println("\n**********Consumer-Producer Test Start**********");
-        cvTest5();
+//		System.out.println("\n**********Condition1 Test Start**********");
+//        new InterlockTest();
+//		System.out.println("\n**********Consumer-Producer Test Start**********");
+//        cvTest5();
     }
 
 

@@ -136,7 +136,7 @@ public class Alarm {
 			ThreadedKernel.alarm.waitUntil(sleeptime);
 			System.out.println(this.name+" works again at: "+ Machine.timer().getTime() +" acturally sleep: "+(Machine.timer().getTime()-time));
 		}
-		
+
 	}
 
 	public static void alarmTestCase1() {
@@ -147,7 +147,7 @@ public class Alarm {
 		ThreadedKernel.alarm.waitUntil(time);
 		System.out.println(KThread.currentThread().toString()+" works again at: "+ Machine.timer().getTime() +" acturally sleep: "+(Machine.timer().getTime()-time1));
 	}
-	
+
 	public static void alarmTestCase2() {
 		System.out.println("\n**********Alarm TESTCASE 2**********");
 		long time=10;
@@ -160,9 +160,9 @@ public class Alarm {
 			ThreadedKernel.alarm.waitUntil(time);
 			System.out.println(temp.toString()+" works again at: "+ Machine.timer().getTime() +" acturally sleep: "+(Machine.timer().getTime()-time1));
 		}
-		
+
 	}
-	
+
 	public static void alarmTestCase3() {
 		System.out.println("\n**********Alarm TESTCASE 3**********");
 		// Mutiple threads wait at different or same time
@@ -173,7 +173,7 @@ public class Alarm {
 		}
 
 	}
-	
+
 	public static void alarmTestCase4() {
 		System.out.println("\n**********Alarm TESTCASE 4**********");
 		int durations[] = {1000, 10*1000, 100*1000};
