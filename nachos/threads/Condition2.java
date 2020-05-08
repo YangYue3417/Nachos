@@ -272,6 +272,7 @@ public class Condition2 {
 ////			(e.g., different timeouts, all are woken up with wakeAll)
 //		}
 
+
         public static void selfTest() {
     		System.out.println("\n**********Condition2 Test Start**********");
             new InterlockTest();

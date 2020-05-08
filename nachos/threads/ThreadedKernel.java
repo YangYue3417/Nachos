@@ -53,6 +53,8 @@ public class ThreadedKernel extends Kernel {
 		Condition2.selfTest();
 		ThreadedKernel.alarm.waitUntil(5000);
 		Condition.selfTest();
+		ThreadedKernel.alarm.waitUntil(5000);
+
 //		ThreadedKernel.alarm.waitUntil(5000);
 //		Semaphore.selfTest();
 //		ThreadedKernel.alarm.waitUntil(5000);
