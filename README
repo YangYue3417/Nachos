@@ -67,3 +67,9 @@ cancel(KThread thread)
 
 Part4 Test:
 It's inside the part3's testcases.
+
+Yang Yue | A53301503 | YangYue3417:
+Part1 Test:
+1. testCase4: test the alarm for situation of setting timer for large negative values.
+
+Will participant more on Proj2, agreed by other teammates.
