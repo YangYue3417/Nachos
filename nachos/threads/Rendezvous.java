@@ -1,4 +1,3 @@
-
 package nachos.threads;
 
 import nachos.machine.*;
@@ -77,10 +76,10 @@ public class Rendezvous {
             public void run() {
                 int tag = 0;
                 int val = 1;
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", original value: " + val);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", original value: " + val);
                 int ans = p.exchange (tag, val);
                 Lib.assertTrue (ans == 2, "Expecting " + 2 + ", but received: " + ans);
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", received value " + ans);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", received value " + ans);
             }
         });
         t1.setName("t1");
@@ -89,10 +88,10 @@ public class Rendezvous {
             public void run() {
                 int tag = 0;
                 int val = 2;
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", original value: " + val);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", original value: " + val);
                 int ans = p.exchange (tag, val);
                 Lib.assertTrue (ans == 1, "Expecting " + 1 + ", but received: " + ans);
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", received " + ans);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", received " + ans);
             }
         });
         t2.setName("t2");
@@ -113,10 +112,10 @@ public class Rendezvous {
             public void run() {
                 int tag = 0;
                 int val = 1;
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", original value: " + val);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", original value: " + val);
                 int ans = p.exchange (tag, val);
                 Lib.assertTrue (ans == 2, "Expecting " + 2 + ", but received: " + ans);
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", received value: " + ans);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", received value: " + ans);
             }
         });
         t1.setName("t1");
@@ -125,10 +124,10 @@ public class Rendezvous {
             public void run() {
                 int tag = 0;
                 int val = 2;
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", original value: " + val);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", original value: " + val);
                 int ans = p.exchange (tag, val);
                 Lib.assertTrue (ans == 1, "Expecting " + 1 + ", but received: " + ans);
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", received value: " + ans);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", received value: " + ans);
             }
         });
         t2.setName("t2");
@@ -137,10 +136,10 @@ public class Rendezvous {
             public void run() {
                 int tag = 0;
                 int val = 3;
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", original value: " + val);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", original value: " + val);
                 int ans = p.exchange (tag, val);
                 Lib.assertTrue (ans == 4, "Expecting " + 4 + ", but received: " + ans);
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", received value: " + ans);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", received value: " + ans);
             }
         });
         t3.setName("t3");
@@ -149,10 +148,10 @@ public class Rendezvous {
             public void run() {
                 int tag = 0;
                 int val = 4;
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", original value: " + val);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", original value: " + val);
                 int ans = p.exchange (tag, val);
                 Lib.assertTrue (ans == 3, "Expecting " + 3 + ", but received: " + ans);
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", received value: " + ans);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", received value: " + ans);
             }
         });
         t4.setName("t4");
@@ -179,10 +178,10 @@ public class Rendezvous {
             public void run() {
                 int tag = 0;
                 int val = 1;
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", tag: 0" + ", original value: " + val);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", tag: 0" + ", original value: " + val);
                 int ans = p.exchange (tag, val);
                 Lib.assertTrue (ans == 3, "Expecting " + 3 + ", but received: " + ans);
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", tag: 0" + ", received value: " + ans);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", tag: 0" + ", received value: " + ans);
             }
         });
         t1.setName("t1");
@@ -191,10 +190,10 @@ public class Rendezvous {
             public void run() {
                 int tag = 1;
                 int val = 2;
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", tag: 1" + ", original value: " + val);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", tag: 1" + ", original value: " + val);
                 int ans = p.exchange (tag, val);
                 Lib.assertTrue (ans == 4, "Expecting " + 4 + ", but received: " + ans);
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", tag: 1" + ", received value: " + ans);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", tag: 1" + ", received value: " + ans);
             }
         });
         t2.setName("t2");
@@ -203,10 +202,10 @@ public class Rendezvous {
             public void run() {
                 int tag = 0;
                 int val = 3;
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", tag: 0" + ", original value: " + val);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", tag: 0" + ", original value: " + val);
                 int ans = p.exchange (tag, val);
                 Lib.assertTrue (ans == 1, "Expecting " + 1 + ", but received: " + ans);
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", tag: 0" + ", received value: " + ans);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", tag: 0" + ", received value: " + ans);
             }
         });
         t3.setName("t3");
@@ -215,10 +214,10 @@ public class Rendezvous {
             public void run() {
                 int tag = 1;
                 int val = 4;
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", tag: 1" + ", original value: " + val);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", tag: 1" + ", original value: " + val);
                 int ans = p.exchange (tag, val);
                 Lib.assertTrue (ans == 2, "Expecting " + 2 + ", but received: " + ans);
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", tag: 1" + ", received value: " + ans);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", tag: 1" + ", received value: " + ans);
             }
         });
         t4.setName("t4");
@@ -244,10 +243,10 @@ public class Rendezvous {
             public void run() {
                 int tag = 0;
                 int val = 1;
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", instance: 1" + ", original value: " + val);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", instance: 1" + ", original value: " + val);
                 int ans = p1.exchange (tag, val);
                 Lib.assertTrue (ans == 3, "Expecting " + 3 + ", but received: " + ans);
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", instance: 1" + ", received value: " + ans);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", instance: 1" + ", received value: " + ans);
             }
         });
         t1.setName("t1");
@@ -256,10 +255,10 @@ public class Rendezvous {
             public void run() {
                 int tag = 0;
                 int val = 2;
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", instance: 2" + ", original value: " + val);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", instance: 2" + ", original value: " + val);
                 int ans = p2.exchange (tag, val);
                 Lib.assertTrue (ans == 4, "Expecting " + 4 + ", but received: " + ans);
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", instance: 2" + ", received value: " + ans);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", instance: 2" + ", received value: " + ans);
             }
         });
         t2.setName("t2");
@@ -268,10 +267,10 @@ public class Rendezvous {
             public void run() {
                 int tag = 0;
                 int val = 3;
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", instance: 1" + ", original value: " + val);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", instance: 1" + ", original value: " + val);
                 int ans = p1.exchange (tag, val);
                 Lib.assertTrue (ans == 1, "Expecting " + 1 + ", but received: " + ans);
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", instance: 1" + ", received value: " + ans);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", instance: 1" + ", received value: " + ans);
             }
         });
         t3.setName("t3");
@@ -280,10 +279,10 @@ public class Rendezvous {
             public void run() {
                 int tag = 0;
                 int val = 4;
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", instance: 2" + ", original value: " + val);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", instance: 2" + ", original value: " + val);
                 int ans = p2.exchange (tag, val);
                 Lib.assertTrue (ans == 2, "Expecting " + 2 + ", but received: " + ans);
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", instance: 2" + ", received value: " + ans);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", instance: 2" + ", received value: " + ans);
             }
         });
         t4.setName("t4");
@@ -308,10 +307,10 @@ public class Rendezvous {
             public void run() {
                 int tag = 0;
                 int val = 1;
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", tag: 0" + ", original value: " + val);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", tag: 0" + ", original value: " + val);
                 int ans = p.exchange (tag, val);
 //                Lib.assertTrue (ans == 2, "Expecting " + 1 + ", but received: " + ans);
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", tag: 0" + ", received value " + ans);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", tag: 0" + ", received value " + ans);
             }
         });
         t1.setName("t1");
@@ -320,10 +319,10 @@ public class Rendezvous {
             public void run() {
                 int tag = 1;
                 int val = 2;
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", tag: 1" + ", original value: " + val);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", tag: 1" + ", original value: " + val);
                 int ans = p.exchange (tag, val);
 //                Lib.assertTrue (ans == 1, "Expecting " + 1 + ", but received: " + ans);
-                System.out.println ("Thread " + KThread.currentThread().getName() + ", tag: 1" + ", received " + ans);
+                System.out.println("Thread " + KThread.currentThread().getName() + ", tag: 1" + ", received " + ans);
             }
         });
         t2.setName("t2");
@@ -334,28 +333,6 @@ public class Rendezvous {
         t1.join();
         t2.join();
     }
-//
-//    public static void exchSyncTest(){
-////        a thread only returns from exchange when another thread synchronizes with it
-//    }
-//
-//    public static void exchReternTest(){
-////        exchange returns the exchanged values from the threads properly;
-//    }
-//
-//    public static void nTo1Test(){
-////        many threads can call exchange on the same tag,
-////        and exchange will correctly pair them up and exchange their values;
-//    }
-//
-//    public static void independenceTest(){
-////        threads exchanging values on different tags operate independently of each other
-//    }
-//
-//    public static void diffInstanceTest(){
-////        threads exchanging values on different instances
-////        of Rendezvous operate independently of each other.
-//    }
 
     public static void selfTest() {
         System.out.println("\n**********Start Rendezvous Testing**********");
