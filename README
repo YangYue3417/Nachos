@@ -75,3 +75,23 @@ Part1 Test:
 Other unsuccessful test cases were commented by my self :(
 
 Will participant more on Proj2, agreed by other teammates.
+
+Shang Wang | A53320852 | ShangWangUCSD
+Finish part 5 and related test cases.
+
+Part5:
+Using a lock and two harhmaps to implement the Rendezvous function. For the harhmaps, the keys of both tag_val and tag_con are the tags. The values in the tag_val are the values used to be exchanged and the values in the tag_con are the condition variables. When there are no such values waiting for exchange, we set the thread to wait until a thread (within a same process) calls to exchange value with the same tag. 
+
+Part5 Test:
+1. Exchange returns the exchanged values from the threads properly.
+We use two threads with the same tag of a same process to perform exchange.
+2. Many threads can call exchange on the same tag, and exchange will correctly pair them up and exchange their values.
+Similar to Test1, we use four threads with the same tag of a same process to perform exchange. Thread 1 perform exchange with Thread 2 and Thread 3 perform exchange with Thread 4.
+3. Threads exchanging values on different tags operate independently of each other.
+We use four threads for testing. First, set the tags of two threads (Thread 1 and 3) to be 0 and set the tags of the other two threads (Thread 2 and 4) to be 1. Then, we execute Rendezvous function.
+4. Threads exchanging values on different instances of Rendezvous operate independently of each other.
+We create two threads (Thread 1 and 3) using instance 1 and the other two threads (Thread 2 and 4) using instance 2. Then, let them execute the Rendezvous function.
+5. A thread only returns from exchange when another thread synchronizes with it.
+This time, we create two threads (Thread 1 and 2) using different tags. Then, let them execute the Rendezvous function. According to the instruction, the test case will not give any return values since both of Thread 1 and Thread 2 are in the wait state. So the program will not finish execution. To avoid this, we can simply changing the sleep function in the 49th line of Rendezvous class to sleepFor(sleepTime) function. sleepTime is a integer while can be manually set.
+
+
