@@ -60,10 +60,10 @@ public class ThreadedKernel extends Kernel {
 //		ThreadedKernel.alarm.waitUntil(5000);
 //		SynchList.selfTest();
 		ThreadedKernel.alarm.waitUntil(5000);
-		Rendezvous.selfTest();
 		if (Machine.bank() != null) {
 			ElevatorBank.selfTest();
 		}
+		Rendezvous.selfTest();
 	}
 
 	/**
