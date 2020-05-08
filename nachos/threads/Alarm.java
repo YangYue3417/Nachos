@@ -203,6 +203,7 @@ public class Alarm {
 		alarmTestCase1();
 		alarmTestCase2();
 		alarmTestCase3();
+		ThreadedKernel.alarm.waitUntil(5000);
 		alarmTestCase4();
 		alarmTestCase5();
 	}
