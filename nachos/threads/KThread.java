@@ -843,24 +843,7 @@ public class KThread {
 		tc10.fork(); tc10.join();
 //		tc11.fork(); tc11.join();
 		tc12.fork(); tc12.join();
-//		tc2.fork();
-//		tc2.join();
-//		tc1.fork();
-//		tc1.join();
-//		tc2.fork();
-//		tc2.join();
-//		testCase1();
-//		testCase2();
-//		testCase3();
-//		testCase4();
-//		testCase5();
-//		//testCase6();
-//		testCase7();
-//		testCase8();
-//		testCase9();
-//		testCase10();
-////		testCase11();
-//		testCase12();
+
 	}
 
 

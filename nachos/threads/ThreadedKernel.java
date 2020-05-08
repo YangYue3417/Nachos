@@ -57,7 +57,8 @@ public class ThreadedKernel extends Kernel {
 //		Semaphore.selfTest();
 //		ThreadedKernel.alarm.waitUntil(5000);
 //		SynchList.selfTest();
-//		ThreadedKernel.alarm.waitUntil(5000);
+		ThreadedKernel.alarm.waitUntil(5000);
+		Rendezvous.selfTest();
 		if (Machine.bank() != null) {
 			ElevatorBank.selfTest();
 		}
