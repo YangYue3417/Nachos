@@ -1,0 +1,45 @@
+------[ Sat May  9 18:12:42 2020 ]------
+PASS : UCSDCondition2Grader.1.conf : CV2 - Test if sleep has acquired the lock
+PASS : UCSDCondition2Grader.2.conf : CV2 - Test if wake has acquired the lock
+PASS : UCSDCondition2Grader.3.conf : CV2 - Test if wakeAll has acquired the lock
+PASS : UCSDCondition2Grader.4.conf : CV2 - Test if sleep() sleeps until someone wakes it up
+PASS : UCSDCondition2Grader.5.conf : CV2 - Test if wake() wakes exactly one sleeping thread
+PASS : UCSDCondition2Grader.6.conf : CV2 - Test if wakeAll() wakes all the sleeping threads
+PASS : UCSDCondition2Grader.7.conf : CV2 - Test if wake has no effect when there is no thread sleeping
+PASS : UCSDCondition2Grader.8.conf : CV2 - Test if wakeAll has no effect when there is no thread sleeping
+PASS : UCSDSleepForGrader.1.conf : SLEEP FOR - Thread resumes because the timeout expires (wake never called)
+FAIL : UCSDSleepForGrader.2.conf : SLEEP FOR - Thread resumes due to wake, timeout cancelled
+FAIL : UCSDSleepForGrader.3.conf : SLEEP FOR - One thread resumes due to wake, another due to timeout
+PASS : UCSDSleepForGrader.4.conf : SLEEP FOR - One thread calls sleep, another calls sleepFor, wake is never called...
+PASS : UCSDSleepForGrader.5.conf : SLEEP FOR - Many threads call sleepFor, all should timeout.
+PASS : UCSDSleepForGrader.6.conf : SLEEP FOR - With many threads, half call sleepFor and should timeout, the...
+PASS : UCSDSleepForGrader.7.conf : SLEEP FOR - Thread resumes because the timeout expires, wake called after the timeout
+FAIL : UCSDSleepForGrader.8.conf : SLEEP FOR - With many threads, half call sleepFor and the other half call sleep. wakeAll...
+FAIL : UCSDSleepForGrader.9.conf : SLEEP FOR - If a waitUntil expires, and some other thread calls wake before it continues
+PASS : UCSDRendezvousGrader.1.conf : RENDEZVOUS - One Exchange.
+FAIL : UCSDRendezvousGrader.2.conf : RENDEZVOUS - Third Thread should block.
+FAIL : UCSDRendezvousGrader.3.conf : RENDEZVOUS - Two threads repeatedly exchanging.
+PASS : UCSDRendezvousGrader.4.conf : RENDEZVOUS - Even threads, no blocking.
+FAIL : UCSDRendezvousGrader.5.conf : RENDEZVOUS - Test many threads exchanging on the same tag.
+PASS : UCSDRendezvousGrader.11.conf : RENDEZVOUS - Test 1 with multiple tags.
+FAIL : UCSDRendezvousGrader.12.conf : RENDEZVOUS - Test 2 with multiple tags.
+FAIL : UCSDRendezvousGrader.13.conf : RENDEZVOUS - Test 3 with multiple tags.
+FAIL : UCSDRendezvousGrader.14.conf : RENDEZVOUS - Test 4 with multiple tags.
+FAIL : UCSDRendezvousGrader.15.conf : RENDEZVOUS - Test 5 with multiple tags.
+FAIL : UCSDRendezvousGrader.20.conf : RENDEZVOUS - Many Instances of Initial Tests in parallel.
+FAIL : UCSDRendezvousGrader.32.conf : RENDEZVOUS - Test independence of multiple Rendezvous instances.
+PASS : UCSDJoinGrader.1.conf : JOIN - Test join() after child had finished.
+PASS : UCSDJoinGrader.2.conf : JOIN - Test join() before child finishes
+PASS : UCSDJoinGrader.3.conf : JOIN - Test join() on different childs right after spawn, one by one
+PASS : UCSDJoinGrader.4.conf : JOIN - Test join() on different childs; all children are spawned first, then joined one by one.
+PASS : UCSDJoinGrader.5.conf : JOIN - Test differnt threads join different other threads.
+PASS : UCSDJoinGrader.6.conf : JOIN - Test joining same thread multiple times should be an error.
+PASS : UCSDJoinGrader.7.conf : JOIN - Test joining oneself should be an error.
+PASS : ThreadGrader4.a.conf : ALARM - Tests waitUntil to ensure it waits at least minimum amount of time
+PASS : ThreadGrader4.b.conf : ALARM - Tests whether waitUntil actually wakes up at correct time
+PASS : UCSDAlarmGrader.1.conf : ALARM - Test if waking up threads in proper order - not necessarily sleep order
+PASS : UCSDAlarmGrader.2.conf : ALARM - Test if thds are waken up at proper time
+PASS : UCSDAlarmGrader.3.conf : ALARM - Tests proper handling of negative wait times.
+PASS : UCSDAlarmGrader.4.conf : ALARM - Tests if mistakenly waking all the threads
+FAIL : UCSDAlarmGrader.5.conf : ALARM CANCEL - Test if cancel works
+Autograde Results: 29 / 43

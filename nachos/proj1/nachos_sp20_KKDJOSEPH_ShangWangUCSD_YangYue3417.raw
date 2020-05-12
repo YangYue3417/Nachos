@@ -1,0 +1,536 @@
+------[ Sat May  9 18:12:42 2020 ]------
+--[ CV2 - Test if sleep has acquired the lock ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+Enter UCSDCondition2Grader.sleepWithoutLockTest
+
+success
+
+--[ CV2 - Test if wake has acquired the lock ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+Enter UCSDCondition2Grader.wakeWithoutLockTest
+
+success
+
+--[ CV2 - Test if wakeAll has acquired the lock ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+Enter UCSDCondition2Grader.wakeAllWithoutLockTest
+
+success
+
+--[ CV2 - Test if sleep() sleeps until someone wakes it up ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+Enter UCSDCondition2Grader.sleepTest
+
+success
+
+--[ CV2 - Test if wake() wakes exactly one sleeping thread ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+Enter UCSDCondition2Grader.wakeTest
+
+success
+
+--[ CV2 - Test if wakeAll() wakes all the sleeping threads ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+Enter UCSDCondition2Grader.wakeAllTest
+Wakeups: 3
+
+success
+
+--[ CV2 - Test if wake has no effect when there is no thread sleeping ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+Enter UCSDCondition2Grader.wakeNoEffectTest
+
+success
+
+--[ CV2 - Test if wakeAll has no effect when there is no thread sleeping ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+Enter UCSDCondition2Grader.wakeAllNoEffectTest
+
+success
+
+--[ SLEEP FOR - Thread resumes because the timeout expires (wake never called) ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+main sleeping
+main woke up, slept for 2050 ticks
+
+success
+
+--[ SLEEP FOR - Thread resumes due to wake, timeout cancelled ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+nachos.machine.AssertionFailureError
+	at nachos.machine.Lib.assertTrue(Lib.java:77)
+	at nachos.threads.KThread.ready(KThread.java:284)
+	at nachos.threads.Alarm.cancel(Alarm.java:115)
+	at nachos.threads.Condition2.wake(Condition2.java:57)
+	at nachos.ag.UCSDSleepForGrader$2.run(UCSDSleepForGrader.java:69)
+	at nachos.threads.KThread.runThread(KThread.java:179)
+	at nachos.threads.KThread.access$000(KThread.java:41)
+	at nachos.threads.KThread$1.run(KThread.java:168)
+	at nachos.machine.TCB.threadroot(TCB.java:246)
+	at nachos.machine.TCB.access$100(TCB.java:25)
+	at nachos.machine.TCB$1.run(TCB.java:99)
+	at java.lang.Thread.run(Thread.java:748)
+
+--[ SLEEP FOR - One thread resumes due to wake, another due to timeout ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+nachos.machine.AssertionFailureError
+	at nachos.machine.Lib.assertTrue(Lib.java:77)
+	at nachos.threads.KThread.ready(KThread.java:284)
+	at nachos.threads.Alarm.cancel(Alarm.java:115)
+	at nachos.threads.Condition2.wake(Condition2.java:57)
+	at nachos.ag.UCSDSleepForGrader$5.run(UCSDSleepForGrader.java:131)
+	at nachos.threads.KThread.runThread(KThread.java:179)
+	at nachos.threads.KThread.access$000(KThread.java:41)
+	at nachos.threads.KThread$1.run(KThread.java:168)
+	at nachos.machine.TCB.threadroot(TCB.java:246)
+	at nachos.machine.TCB.access$100(TCB.java:25)
+	at nachos.machine.TCB$1.run(TCB.java:99)
+	at java.lang.Thread.run(Thread.java:748)
+
+--[ SLEEP FOR - One thread calls sleep, another calls sleepFor, wake is never called... ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+success
+
+--[ SLEEP FOR - Many threads call sleepFor, all should timeout. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+success
+
+--[ SLEEP FOR - With many threads, half call sleepFor and should timeout, the... ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+success
+
+--[ SLEEP FOR - Thread resumes because the timeout expires, wake called after the timeout ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+success
+
+--[ SLEEP FOR - With many threads, half call sleepFor and the other half call sleep. wakeAll... ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+t1 sleeping
+t2 sleeping
+t3 sleeping
+t4 sleeping
+t5 sleeping
+t6 sleeping
+t7 sleeping
+t8 sleeping
+t9 sleeping
+t10 sleeping
+t11 sleeping
+t12 sleeping
+t13 sleeping
+t14 sleeping
+t15 sleeping
+t16 sleeping
+t17 sleeping
+t18 sleeping
+t19 sleeping
+t20 sleeping
+
+nachos.machine.AssertionFailureError
+	at nachos.machine.Lib.assertTrue(Lib.java:77)
+	at nachos.threads.KThread.ready(KThread.java:284)
+	at nachos.threads.Alarm.cancel(Alarm.java:115)
+	at nachos.threads.Condition2.wake(Condition2.java:57)
+	at nachos.threads.Condition2.wakeAll(Condition2.java:76)
+	at nachos.ag.UCSDSleepForGrader.sleepFor8(UCSDSleepForGrader.java:347)
+	at nachos.ag.UCSDSleepForGrader.run(UCSDSleepForGrader.java:409)
+	at nachos.ag.AutoGrader.start(AutoGrader.java:47)
+	at nachos.machine.Machine$1.run(Machine.java:73)
+	at nachos.machine.TCB.threadroot(TCB.java:246)
+	at nachos.machine.TCB.start(TCB.java:129)
+	at nachos.machine.Machine.main(Machine.java:71)
+
+--[ SLEEP FOR - If a waitUntil expires, and some other thread calls wake before it continues ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+nachos.machine.AssertionFailureError
+	at nachos.machine.Lib.assertTrue(Lib.java:77)
+	at nachos.threads.KThread.ready(KThread.java:282)
+	at nachos.threads.Condition2.wake(Condition2.java:59)
+	at nachos.ag.UCSDSleepForGrader$12.run(UCSDSleepForGrader.java:382)
+	at nachos.threads.KThread.runThread(KThread.java:179)
+	at nachos.threads.KThread.access$000(KThread.java:41)
+	at nachos.threads.KThread$1.run(KThread.java:168)
+	at nachos.machine.TCB.threadroot(TCB.java:246)
+	at nachos.machine.TCB.access$100(TCB.java:25)
+	at nachos.machine.TCB$1.run(TCB.java:99)
+	at java.lang.Thread.run(Thread.java:748)
+
+--[ RENDEZVOUS - One Exchange. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+Thread t1/tag19 exchanging -1
+Thread t2/tag19 exchanging 1
+Thread t2/tag19 received -1
+Thread t1/tag19 received 1
+
+success
+
+--[ RENDEZVOUS - Third Thread should block. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+nachos.machine.AssertionFailureError: odd thread did not block correctly
+	at nachos.machine.Lib.assertTrue(Lib.java:89)
+	at nachos.ag.UCSDRendezvousGrader.rendezTest2(UCSDRendezvousGrader.java:143)
+	at nachos.ag.UCSDRendezvousGrader.run(UCSDRendezvousGrader.java:403)
+	at nachos.ag.AutoGrader.start(AutoGrader.java:47)
+	at nachos.machine.Machine$1.run(Machine.java:73)
+	at nachos.machine.TCB.threadroot(TCB.java:246)
+	at nachos.machine.TCB.start(TCB.java:129)
+	at nachos.machine.Machine.main(Machine.java:71)
+
+--[ RENDEZVOUS - Two threads repeatedly exchanging. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+nachos.machine.AssertionFailureError: value not exchanged correctly after multiple exchanges
+	at nachos.machine.Lib.assertTrue(Lib.java:89)
+	at nachos.ag.UCSDRendezvousGrader$4.run(UCSDRendezvousGrader.java:178)
+	at nachos.threads.KThread.runThread(KThread.java:179)
+	at nachos.threads.KThread.access$000(KThread.java:41)
+	at nachos.threads.KThread$1.run(KThread.java:168)
+	at nachos.machine.TCB.threadroot(TCB.java:246)
+	at nachos.machine.TCB.access$100(TCB.java:25)
+	at nachos.machine.TCB$1.run(TCB.java:99)
+	at java.lang.Thread.run(Thread.java:748)
+
+--[ RENDEZVOUS - Even threads, no blocking. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+success
+
+--[ RENDEZVOUS - Test many threads exchanging on the same tag. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+val 100 recv 109
+val 101 recv 103
+val 102 recv 100
+val 103 recv 102
+val 104 recv 101
+val 105 recv 108
+val 106 recv 104
+val 107 recv 105
+val 108 recv 107
+val 109 recv 106
+
+nachos.machine.AssertionFailureError: values not exchanged correctly between pairs of threads
+	at nachos.machine.Lib.assertTrue(Lib.java:89)
+	at nachos.ag.UCSDRendezvousGrader.rendezTest5(UCSDRendezvousGrader.java:305)
+	at nachos.ag.UCSDRendezvousGrader.run(UCSDRendezvousGrader.java:406)
+	at nachos.ag.AutoGrader.start(AutoGrader.java:47)
+	at nachos.machine.Machine$1.run(Machine.java:73)
+	at nachos.machine.TCB.threadroot(TCB.java:246)
+	at nachos.machine.TCB.start(TCB.java:129)
+	at nachos.machine.Machine.main(Machine.java:71)
+
+--[ RENDEZVOUS - Test 1 with multiple tags. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+Thread t1/tag5948 exchanging -1
+Thread t2/tag5948 exchanging 1
+Thread t2/tag5948 received -1
+Thread t1/tag8029 exchanging -1
+Thread t2/tag8029 exchanging 1
+Thread t2/tag8029 received -1
+Thread t1/tag6447 exchanging -1
+Thread t2/tag6447 exchanging 1
+Thread t2/tag6447 received -1
+Thread t1/tag3515 exchanging -1
+Thread t2/tag3515 exchanging 1
+Thread t2/tag3515 received -1
+Thread t1/tag1053 exchanging -1
+Thread t2/tag1053 exchanging 1
+Thread t2/tag1053 received -1
+Thread t1/tag4491 exchanging -1
+Thread t2/tag4491 exchanging 1
+Thread t2/tag4491 received -1
+Thread t1/tag9761 exchanging -1
+Thread t2/tag9761 exchanging 1
+Thread t2/tag9761 received -1
+Thread t1/tag8719 exchanging -1
+Thread t2/tag8719 exchanging 1
+Thread t2/tag8719 received -1
+Thread t1/tag2854 exchanging -1
+Thread t2/tag2854 exchanging 1
+Thread t2/tag2854 received -1
+Thread t1/tag1077 exchanging -1
+Thread t2/tag1077 exchanging 1
+Thread t2/tag1077 received -1
+Thread t1/tag2677 exchanging -1
+Thread t2/tag2677 exchanging 1
+Thread t2/tag2677 received -1
+Thread t1/tag7473 exchanging -1
+Thread t2/tag7473 exchanging 1
+Thread t2/tag7473 received -1
+Thread t1/tag1095 exchanging -1
+Thread t2/tag1095 exchanging 1
+Thread t2/tag1095 received -1
+Thread t1/tag5948 received 1
+Thread t1/tag8029 received 1
+Thread t1/tag6447 received 1
+Thread t1/tag3515 received 1
+Thread t1/tag1053 received 1
+Thread t1/tag4491 received 1
+Thread t1/tag9761 received 1
+Thread t1/tag8719 received 1
+Thread t1/tag2854 received 1
+Thread t1/tag1077 received 1
+Thread t1/tag2677 received 1
+Thread t1/tag7473 received 1
+Thread t1/tag1095 received 1
+
+success
+
+--[ RENDEZVOUS - Test 2 with multiple tags. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+nachos.machine.AssertionFailureError: odd thread did not block correctly
+	at nachos.machine.Lib.assertTrue(Lib.java:89)
+	at nachos.ag.UCSDRendezvousGrader.rendezTest2(UCSDRendezvousGrader.java:143)
+	at nachos.ag.UCSDRendezvousGrader.lambda$run$4(UCSDRendezvousGrader.java:409)
+	at nachos.ag.UCSDRendezvousGrader$7.run(UCSDRendezvousGrader.java:320)
+	at nachos.threads.KThread.runThread(KThread.java:179)
+	at nachos.threads.KThread.access$000(KThread.java:41)
+	at nachos.threads.KThread$1.run(KThread.java:168)
+	at nachos.machine.TCB.threadroot(TCB.java:246)
+	at nachos.machine.TCB.access$100(TCB.java:25)
+	at nachos.machine.TCB$1.run(TCB.java:99)
+	at java.lang.Thread.run(Thread.java:748)
+
+--[ RENDEZVOUS - Test 3 with multiple tags. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+nachos.machine.AssertionFailureError: value not exchanged correctly after multiple exchanges
+	at nachos.machine.Lib.assertTrue(Lib.java:89)
+	at nachos.ag.UCSDRendezvousGrader$4.run(UCSDRendezvousGrader.java:178)
+	at nachos.threads.KThread.runThread(KThread.java:179)
+	at nachos.threads.KThread.access$000(KThread.java:41)
+	at nachos.threads.KThread$1.run(KThread.java:168)
+	at nachos.machine.TCB.threadroot(TCB.java:246)
+	at nachos.machine.TCB.access$100(TCB.java:25)
+	at nachos.machine.TCB$1.run(TCB.java:99)
+	at java.lang.Thread.run(Thread.java:748)
+
+--[ RENDEZVOUS - Test 4 with multiple tags. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+nachos.machine.AssertionFailureError: not all threads exchanged
+	at nachos.machine.Lib.assertTrue(Lib.java:89)
+	at nachos.ag.UCSDRendezvousGrader.rendezTest4(UCSDRendezvousGrader.java:225)
+	at nachos.ag.UCSDRendezvousGrader.lambda$run$6(UCSDRendezvousGrader.java:411)
+	at nachos.ag.UCSDRendezvousGrader$7.run(UCSDRendezvousGrader.java:320)
+	at nachos.threads.KThread.runThread(KThread.java:179)
+	at nachos.threads.KThread.access$000(KThread.java:41)
+	at nachos.threads.KThread$1.run(KThread.java:168)
+	at nachos.machine.TCB.threadroot(TCB.java:246)
+	at nachos.machine.TCB.access$100(TCB.java:25)
+	at nachos.machine.TCB$1.run(TCB.java:99)
+	at java.lang.Thread.run(Thread.java:748)
+
+--[ RENDEZVOUS - Test 5 with multiple tags. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+nachos.machine.AssertionFailureError: not all threads exchanged
+	at nachos.machine.Lib.assertTrue(Lib.java:89)
+	at nachos.ag.UCSDRendezvousGrader.rendezTest5(UCSDRendezvousGrader.java:275)
+	at nachos.ag.UCSDRendezvousGrader.lambda$run$7(UCSDRendezvousGrader.java:412)
+	at nachos.ag.UCSDRendezvousGrader$7.run(UCSDRendezvousGrader.java:320)
+	at nachos.threads.KThread.runThread(KThread.java:179)
+	at nachos.threads.KThread.access$000(KThread.java:41)
+	at nachos.threads.KThread$1.run(KThread.java:168)
+	at nachos.machine.TCB.threadroot(TCB.java:246)
+	at nachos.machine.TCB.access$100(TCB.java:25)
+	at nachos.machine.TCB$1.run(TCB.java:99)
+	at java.lang.Thread.run(Thread.java:748)
+
+--[ RENDEZVOUS - Many Instances of Initial Tests in parallel. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+Thread t1/tag5948 exchanging -1
+Thread t2/tag5948 exchanging 1
+Thread t2/tag5948 received -1
+Thread t1/tag8029 exchanging -1
+Thread t2/tag8029 exchanging 1
+Thread t2/tag8029 received -1
+Thread t1/tag6447 exchanging -1
+Thread t2/tag6447 exchanging 1
+Thread t2/tag6447 received -1
+Thread t1/tag1053 exchanging -1
+Thread t2/tag1053 exchanging 1
+Thread t2/tag1053 received -1
+Thread t1/tag4491 exchanging -1
+Thread t2/tag4491 exchanging 1
+Thread t2/tag4491 received -1
+Thread t1/tag9761 exchanging -1
+Thread t2/tag9761 exchanging 1
+Thread t2/tag9761 received -1
+Thread t1/tag8719 exchanging -1
+Thread t2/tag8719 exchanging 1
+Thread t2/tag8719 received -1
+Thread t1/tag2854 exchanging -1
+Thread t2/tag2854 exchanging 1
+Thread t2/tag2854 received -1
+Thread t1/tag1077 exchanging -1
+Thread t2/tag1077 exchanging 1
+Thread t2/tag1077 received -1
+Thread t1/tag2677 exchanging -1
+Thread t2/tag2677 exchanging 1
+Thread t2/tag2677 received -1
+Thread t1/tag7473 exchanging -1
+Thread t2/tag7473 exchanging 1
+Thread t2/tag7473 received -1
+Thread t1/tag4262 exchanging -1
+Thread t2/tag4262 exchanging 1
+Thread t2/tag4262 received -1
+Thread t1/tag1095 exchanging -1
+Thread t2/tag1095 exchanging 1
+Thread t2/tag1095 received -1
+Thread t1/tag5948 received 1
+Thread t1/tag8029 received 1
+Thread t1/tag6447 received 1
+Thread t1/tag1053 received 1
+Thread t1/tag4491 received 1
+Thread t1/tag9761 received 1
+Thread t1/tag8719 received 1
+Thread t1/tag2854 received 1
+Thread t1/tag1077 received 1
+Thread t1/tag2677 received 1
+Thread t1/tag7473 received 1
+Thread t1/tag4262 received 1
+Thread t1/tag1095 received 1
+
+nachos.machine.AssertionFailureError: value not exchanged correctly after multiple exchanges
+	at nachos.machine.Lib.assertTrue(Lib.java:89)
+	at nachos.ag.UCSDRendezvousGrader$4.run(UCSDRendezvousGrader.java:178)
+	at nachos.threads.KThread.runThread(KThread.java:179)
+	at nachos.threads.KThread.access$000(KThread.java:41)
+	at nachos.threads.KThread$1.run(KThread.java:168)
+	at nachos.machine.TCB.threadroot(TCB.java:246)
+	at nachos.machine.TCB.access$100(TCB.java:25)
+	at nachos.machine.TCB$1.run(TCB.java:99)
+	at java.lang.Thread.run(Thread.java:748)
+
+--[ RENDEZVOUS - Test independence of multiple Rendezvous instances. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+Thread t1-0/tag47 exchanging 0
+Thread t2-0/tag47 exchanging 0
+Thread t1-1/tag47 exchanging 1
+Thread t1-1/tag47 received 0
+Thread t2-1/tag47 exchanging 1
+Thread t2-1/tag47 received 0
+Thread t1-2/tag47 exchanging 2
+Thread t1-2/tag47 received 1
+Thread t2-2/tag47 exchanging 2
+Thread t2-2/tag47 received 1
+Thread t1-0/tag47 received 2
+Thread t2-0/tag47 received 2
+tag 47
+count 3
+count2 3
+finished 3
+finished2 3
+
+nachos.machine.AssertionFailureError: odd thread did not block correctly
+	at nachos.machine.Lib.assertTrue(Lib.java:89)
+	at nachos.ag.UCSDRendezvousGrader.rendezTest32(UCSDRendezvousGrader.java:394)
+	at nachos.ag.UCSDRendezvousGrader.run(UCSDRendezvousGrader.java:416)
+	at nachos.ag.AutoGrader.start(AutoGrader.java:47)
+	at nachos.machine.Machine$1.run(Machine.java:73)
+	at nachos.machine.TCB.threadroot(TCB.java:246)
+	at nachos.machine.TCB.start(TCB.java:129)
+	at nachos.machine.Machine.main(Machine.java:71)
+
+--[ JOIN - Test join() after child had finished. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+busy...
+I (heart) Nachos!
+busy...
+busy...
+busy...
+busy...
+
+success
+
+--[ JOIN - Test join() before child finishes ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+I (heart) Nachos!
+I (heart) Nachos!
+I (heart) Nachos!
+I (heart) Nachos!
+I (heart) Nachos!
+
+success
+
+--[ JOIN - Test join() on different childs right after spawn, one by one ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+success
+
+--[ JOIN - Test join() on different childs; all children are spawned first, then joined one by one. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+success
+
+--[ JOIN - Test differnt threads join different other threads. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+success
+
+--[ JOIN - Test joining same thread multiple times should be an error. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+Exception caught: null
+
+success
+
+--[ JOIN - Test joining oneself should be an error. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+Exception caught: null
+
+success
+
+--[ ALARM - Tests waitUntil to ensure it waits at least minimum amount of time ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+success
+
+--[ ALARM - Tests whether waitUntil actually wakes up at correct time ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+success
+
+--[ ALARM - Test if waking up threads in proper order - not necessarily sleep order ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+success
+
+--[ ALARM - Test if thds are waken up at proper time ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+success
+
+--[ ALARM - Tests proper handling of negative wait times. ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+success
+
+--[ ALARM - Tests if mistakenly waking all the threads ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+success
+
+--[ ALARM CANCEL - Test if cancel works ]--
+nachos 5.0j initializing... config interrupt timer elevators user-check grader
+
+nachos.machine.AssertionFailureError
+	at nachos.machine.Lib.assertTrue(Lib.java:77)
+	at nachos.threads.KThread.ready(KThread.java:284)
+	at nachos.threads.Alarm.cancel(Alarm.java:115)
+	at nachos.ag.UCSDAlarmGrader.alarmTest5(UCSDAlarmGrader.java:140)
+	at nachos.ag.UCSDAlarmGrader.run(UCSDAlarmGrader.java:155)
+	at nachos.ag.AutoGrader.start(AutoGrader.java:47)
+	at nachos.machine.Machine$1.run(Machine.java:73)
+	at nachos.machine.TCB.threadroot(TCB.java:246)
+	at nachos.machine.TCB.start(TCB.java:129)
+	at nachos.machine.Machine.main(Machine.java:71)
+
