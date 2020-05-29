@@ -19,15 +19,120 @@ import java.io.EOFException;
  * @see nachos.vm.VMProcess
  * @see nachos.network.NetProcess
  */
+
+
+
 public class UserProcess {
 	/**
 	 * Allocate a new process.
 	 */
+	
+	// parameters and functions for part 1
+	private OpenFile[] fdTable;
+	
+	private int handleCreate(int vaName) {
+		if(vaName < 0) return -1;
+		String fileName = readVirtualMemoryString(vaName, 256);
+		if(fileName == null || fileName.length() <= 0) return -1;
+		
+		// check availability
+		int index = 17;
+		for(int i=2; i<16;i++) {
+			if(fdTable[i]==null) {
+				index=i;
+				break;
+			}
+		}
+		
+		if(index == 17) return -1;
+		
+		OpenFile file = ThreadedKernel.fileSystem.open(fileName, true);
+		if(file == null) {
+			return -1;
+		}
+		else {
+			fdTable[index] = file;
+			return index;
+		}
+	}
+	
+	private int handleOpen(int vaName) {
+		if(vaName < 0) return -1;
+		String fileName = readVirtualMemoryString(vaName, 256);
+		if(fileName == null || fileName.length() <= 0) return -1;
+		
+		// check availability
+		int index = 17;
+		for(int i=2; i<16;i++) {
+			if(fdTable[i]==null) {
+				index=i;
+				break;
+			}
+		}
+		
+		if(index == 17) return -1;
+		
+		OpenFile file = ThreadedKernel.fileSystem.open(fileName, true);
+		if(file == null) {
+			return -1;
+		}
+		else {
+			fdTable[index] = file;
+			return index;
+		}
+		
+		
+		
+	}
+	
+	private int handleClose(int fd) {
+		if(fd<0 || fd>15 || fdTable[fd]==null) {
+			return -1;
+		}
+		// Do we need synchronization here????
+		boolean Pstatus=Machine.interrupt().disable();
+		fdTable[fd].close();
+		fdTable[fd] = null;
+		Machine.interrupt().restore(Pstatus);
+		
+		return 0;
+	}
+	
+	private int handleUnlink(int vaName) {
+		if(vaName < 0) return -1;
+		String fileName = readVirtualMemoryString(vaName, 256);
+		if(fileName == null || fileName.length() <= 0) return -1;
+		
+		boolean remove = ThreadedKernel.fileSystem.remove(fileName);
+		
+		int status = -1;
+		for(int i=2; i<16; i++) {
+			if(fdTable[i]!=null) {
+				if(fdTable[i].getName().equals(fileName)) {
+					status = handleClose(i);
+				}
+			}
+		}
+		
+		if(remove && status == 0) {
+			return 0;
+		}
+		else {
+			return -1;
+		}
+		
+	}
+	
 	public UserProcess() {
 		int numPhysPages = Machine.processor().getNumPhysPages();
 		pageTable = new TranslationEntry[numPhysPages];
 		for (int i = 0; i < numPhysPages; i++)
 			pageTable[i] = new TranslationEntry(i, i, true, false, false, false);
+		
+		fdTable = new OpenFile[16];
+		fdTable[0] = UserKernel.console.openForReading(); // stdin
+		fdTable[1] = UserKernel.console.openForWriting(); // stdout
+		
 	}
 
 	/**
@@ -446,6 +551,15 @@ public class UserProcess {
 			return handleHalt();
 		case syscallExit:
 			return handleExit(a0);
+		// case for part 1
+		case syscallCreate:
+			return handleCreate(a0);
+		case syscallOpen:
+			return handleOpen(a0);
+		case syscallClose:
+			return handleClose(a0);
+		case syscallUnlink:
+			return handleUnlink(a0);
 
 		default:
 			Lib.debug(dbgProcess, "Unknown syscall " + syscall);
