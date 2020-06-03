@@ -89,11 +89,9 @@ public class UserProcess {
 		if(fd<0 || fd>15 || fdTable[fd]==null) {
 			return -1;
 		}
-		// Do we need synchronization here????
-		boolean Pstatus=Machine.interrupt().disable();
+		
 		fdTable[fd].close();
 		fdTable[fd] = null;
-		Machine.interrupt().restore(Pstatus);
 		
 		return 0;
 	}
@@ -105,16 +103,7 @@ public class UserProcess {
 		
 		boolean remove = ThreadedKernel.fileSystem.remove(fileName);
 		
-		int status = -1;
-		for(int i=2; i<16; i++) {
-			if(fdTable[i]!=null) {
-				if(fdTable[i].getName().equals(fileName)) {
-					status = handleClose(i);
-				}
-			}
-		}
-		
-		if(remove && status == 0) {
+		if(remove) {
 			return 0;
 		}
 		else {
