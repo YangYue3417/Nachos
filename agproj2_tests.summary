@@ -9,3 +9,14 @@ FAIL : Test execarg1.c
 PASS : Test except1.c
 PASS : Test exit1.c
 
+------[                  Wed Jun  3 21:27:56 2020                  ]------
+------[  Grading Commit: 9585e97684cc4488fac448c0700fdb79371fa359  ]------
+PASS : Test write1.c
+PASS : Test write4.c
+FAIL : Test write10.c
+PASS : Test exec1.c
+FAIL : Test join1.c
+FAIL : Test execarg1.c
+PASS : Test except1.c
+PASS : Test exit1.c
+
