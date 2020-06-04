@@ -1,0 +1,199 @@
+------[                  Wed Jun  3 21:01:46 2020                  ]------
+------[  Grading Commit: 0fb6e98ec69267c09ee6df81df2aef75593225da  ]------
+--[ Test write1.c ]--
+nachos 5.0j initializing... config interrupt timer processor console user-check grader
+
+roses are red
+violets are blue
+I love Nachos
+and so do you
+
+
+success
+
+--[ Test write4.c ]--
+nachos 5.0j initializing... config interrupt timer processor console user-check grader
+Test: Sending string "<3 nachos!
+.
+" to stdin.
+
+-> <3 nachos!
+-> 
+success
+
+--[ Test write10.c ]--
+nachos 5.0j initializing... config interrupt timer processor console user-check grader
+creating write.out...
+...passed (fd = 2)
+writing 59 bytes to file, 59 bytes at a time...
+...passed (wrote 59 bytes)
+closing 2...
+opening write.out...
+...passed (fd = 2)
+reading write.out into buffer...
+...failed (expected to read 59 bytes, but read 0)
+closing 2...
+creating write.out...
+...passed (fd = 2)
+writing 59 bytes to file, 8 bytes at a time...
+...passed (wrote 8 bytes)
+...passed (wrote 8 bytes)
+...passed (wrote 8 bytes)
+...passed (wrote 8 bytes)
+...passed (wrote 8 bytes)
+...passed (wrote 8 bytes)
+...passed (wrote 8 bytes)
+...passed (wrote 3 bytes)
+closing 2...
+opening write.out...
+...passed (fd = 2)
+reading write.out into buffer...
+...failed (expected to read 59 bytes, but read 0)
+closing 2...
+creating write.out...
+...passed (fd = 2)
+writing 59 bytes to file, 1 bytes at a time...
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+...passed (wrote 1 bytes)
+closing 2...
+opening write.out...
+...passed (fd = 2)
+reading write.out into buffer...
+...failed (expected to read 59 bytes, but read 0)
+closing 2...
+creating binary.out...
+...passed (fd = 2)
+writing 4096 bytes to file, 4096 bytes at a time...
+...passed (wrote 4096 bytes)
+closing 2...
+opening binary.out...
+...passed (fd = 2)
+reading binary.out into buffer...
+./nachos_executable: line 14: 32280 Killed                  java nachos.machine.Machine $*
+
+--[ Test exec1.c ]--
+nachos 5.0j initializing... config interrupt timer processor console user-check grader
+ParentChildGrader: Parent exited with status 1
+ParentChildGrader: Child exited with status 123
+
+success
+
+--[ Test join1.c ]--
+nachos 5.0j initializing... config interrupt timer processor console user-check grader
+execing exit1.coff...
+...passed
+joining 1...
+./nachos_executable: line 14: 32662 Killed                  java nachos.machine.Machine $*
+
+--[ Test execarg1.c ]--
+nachos 5.0j initializing... config interrupt timer processor console user-check grader
+childargc: 5
+childargv: 13280 (0x33e0)
+
+&childargv[0]: 13280 (0x33e0)
+&childargv[1]: 13284 (0x33e4)
+&childargv[2]: 13288 (0x33e8)
+&childargv[3]: 13292 (0x33ec)
+&childargv[4]: 13296 (0x33f0)
+childargv[0]: 3072 (0xc00)
+childargv[1]: 3084 (0xc0c)
+childargv[2]: 3100 (0xc1c)
+childargv[3]: 3120 (0xc30)
+childargv[4]: 3136 (0xc40)
+
+nachos.machine.AssertionFailureError
+	at nachos.machine.Lib.assertTrue(Lib.java:77)
+	at nachos.userprog.UserProcess.load(UserProcess.java:618)
+	at nachos.userprog.UserProcess.execute(UserProcess.java:179)
+	at nachos.userprog.UserProcess.handleExec(UserProcess.java:747)
+	at nachos.userprog.UserProcess.handleSyscall(UserProcess.java:928)
+	at nachos.userprog.UserProcess.handleException(UserProcess.java:955)
+	at nachos.userprog.UserKernel.exceptionHandler(UserKernel.java:91)
+	at nachos.userprog.UserKernel$1.run(UserKernel.java:37)
+	at nachos.machine.Processor$MipsException.handle(Processor.java:619)
+	at nachos.machine.Processor.run(Processor.java:101)
+	at nachos.userprog.UThread.runProgram(UThread.java:31)
+	at nachos.userprog.UThread.access$000(UThread.java:11)
+	at nachos.userprog.UThread$1.run(UThread.java:20)
+	at nachos.threads.KThread.runThread(KThread.java:179)
+	at nachos.threads.KThread.access$000(KThread.java:41)
+	at nachos.threads.KThread$1.run(KThread.java:168)
+	at nachos.machine.TCB.threadroot(TCB.java:246)
+	at nachos.machine.TCB.access$100(TCB.java:25)
+	at nachos.machine.TCB$1.run(TCB.java:99)
+	at java.lang.Thread.run(Thread.java:748)
+
+--[ Test except1.c ]--
+nachos 5.0j initializing... config interrupt timer processor console user-check grader
+
+roses are red
+violets are blue
+I love Nachos
+and so do you
+
+
+success
+
+--[ Test exit1.c ]--
+nachos 5.0j initializing... config interrupt timer processor console user-check grader
+
+success
+
+

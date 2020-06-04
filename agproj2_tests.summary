@@ -1,0 +1,11 @@
+------[                  Wed Jun  3 21:01:46 2020                  ]------
+------[  Grading Commit: 0fb6e98ec69267c09ee6df81df2aef75593225da  ]------
+PASS : Test write1.c
+PASS : Test write4.c
+FAIL : Test write10.c
+PASS : Test exec1.c
+FAIL : Test join1.c
+FAIL : Test execarg1.c
+PASS : Test except1.c
+PASS : Test exit1.c
+
