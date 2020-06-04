@@ -94,4 +94,20 @@ We create two threads (Thread 1 and 3) using instance 1 and the other two thread
 5. A thread only returns from exchange when another thread synchronizes with it.
 This time, we create two threads (Thread 1 and 2) using different tags. Then, let them execute the Rendezvous function. According to the instruction, the test case will not give any return values since both of Thread 1 and Thread 2 are in the wait state. So the program will not finish execution. To avoid this, we can simply changing the sleep function in the 49th line of Rendezvous class to sleepFor(sleepTime) function. sleepTime is a integer while can be manually set.
 
+---------------------------------------------------------------------------------
+PART 2
+
+Shang Wang | A53320852 | ShangWangUCSD
+Finish part 3 and related test cases.
+
+Part3:
+Implement handlers for system calls including exec, join, and exit. We implement bullet proof for all three handlers.
+
+1. We used a integer and related lock stored in the static  memory to create unique PID for each process. The handleExec() handles exec syscall and executes a given coff file in a child process with a unique pid assigned to it. 
+
+
+2. The handleJoin() handles join syscall and put current process to sleep until the child process finishes. We have a map for each process to tracking its child processes and another map to record the return value for each process. Once a process is woken by its child process, it writes the return value of the child process to the specific memory if necessary.
+
+3. The handleExit() handles exit syscall and cleans all resources used by current process. Also, it unowns its child processes. If current process has a parent process, it writes the return value to a map for recording and wake up the parent process which is going to join current process. If the exiting process is the last one, it calls to terminate.
+
 
