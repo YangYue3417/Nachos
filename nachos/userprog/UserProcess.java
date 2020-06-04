@@ -699,7 +699,7 @@ public class UserProcess {
 		// ...and leave it as the top of handleExit so that we
 		// can grade your implementation.
 
-		joinLock.acquire();
+		this.joinLock.acquire();
 		// If this process has a parent, save its status for exiting.
 		if (parentProcess != null) {
 			UserProcess currentProcess = parentProcess.childMap.get(PID);
@@ -731,7 +731,7 @@ public class UserProcess {
 		// Wake up parent process.
 		is_exit = true;
 		joinCondition.wakeAll();
-		joinLock.release();
+		this.joinLock.release();
 
 		// Check if we should terminate the machine.
 		staticVarLock.acquire();
