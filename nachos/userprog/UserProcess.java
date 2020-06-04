@@ -122,14 +122,6 @@ public class UserProcess {
 		
 		boolean remove = ThreadedKernel.fileSystem.remove(fileName);
 		
-		// int status = -1;
-		// for(int i=2; i<16; i++) {
-		// 	if(fdTable[i]!=null) {
-		// 		if(fdTable[i].getName().equals(fileName)) {
-		// 			status = handleClose(i);
-		// 		}
-		// 	}
-		// }
 		
 		if(remove) {
 			return 0;
@@ -202,47 +194,46 @@ public class UserProcess {
 
 	 @return total number of bytes that has been read from buffer
 	 **/
-	private int handleRead(int fd, int vaBuffer, int count){
-
-		//Check whether the parameters are valid
-		if(fd<0 || fd>15 || vaBuffer<0 || fdTable[fd]==null || count<0){
+		private int handleRead(int fd, int buffer, int count) {
+		if (fd<0 || fd>15) {
 			return -1;
 		}
-		byte[] localBuffer = new byte[pageSize];
-		int unreadBytes = count;
-		int readBytes = 0;
-		int totalReadBytes = 0;
-		int tempBuffBytes = 0;
-		// Continuous readin bytes from memory if the total count is greater than 1 pageSize
-		while(unreadBytes > pageSize){
-			readBytes = fdTable[fd].read(localBuffer, 0, pageSize);
-			// read fail
-			if (readBytes == -1){
+		OpenFile openFile = fdTable[fd];
+		if (openFile==null) {
+			return -1;
+		}
+		if (count < 0 || count > pageTable.length*pageSize) {
+			return -1;
+		}
+		byte[] pageSizeArray = new byte[pageSize];
+		int readCount = 0;
+		while (count > pageSize) {
+			int oneTurnRead = openFile.read(pageSizeArray,0,pageSize);
+			if (oneTurnRead == 0 ) return readCount;
+			if (oneTurnRead < 0) {
 				return -1;
 			}
-			// write localBuffer to vaBuffer
-			tempBuffBytes = writeVirtualMemory(vaBuffer, localBuffer, 0, readBytes);
-			if (tempBuffBytes != readBytes){  // Necessary?
+			int oneTurnWrite = writeVirtualMemory(buffer,pageSizeArray,0,oneTurnRead);
+			if (oneTurnRead < oneTurnWrite) {
 				return -1;
 			}
-
-			unreadBytes -= readBytes;
-			totalReadBytes += readBytes;
-			vaBuffer += readBytes;
+			oneTurnRead = Math.min(oneTurnRead, oneTurnWrite);
+			buffer += oneTurnRead;
+			readCount += oneTurnRead;
+			count -= oneTurnRead;
 		}
-
-		// case when count is smaller than 1 pageSize
-		readBytes = fdTable[fd].read(localBuffer, 0, count);
-		if(readBytes == -1){
+		int oneTurnRead = openFile.read(pageSizeArray,0,count);
+		if (oneTurnRead < 0) {
 			return -1;
 		}
-
-		tempBuffBytes = writeVirtualMemory(vaBuffer, localBuffer,0, readBytes);
-		if (tempBuffBytes!=readBytes){
+		int oneTurnWrite = writeVirtualMemory(buffer,pageSizeArray,0,oneTurnRead);
+		if (oneTurnRead < oneTurnWrite) {
 			return -1;
 		}
-		totalReadBytes += readBytes;
-		return totalReadBytes;
+		oneTurnRead = Math.min(oneTurnRead, oneTurnWrite);
+		readCount += oneTurnRead;
+		count -= oneTurnRead;
+		return readCount;
 	}
 
 	/**
@@ -253,38 +244,37 @@ public class UserProcess {
 	 *
 	 * @return total bytes that has been written into memory
 	 */
-	private int handleWrite(int fd, int vaBuffer, int count){
-		byte[] localBuffer = new byte[pageSize];
-		int unwrittenBytes = count;
-		int totalWrittenBytes = 0;
-		int writtenBytes = 0;
-		int writeByteBuffer = 0;
-
-		while(unwrittenBytes > pageSize){
-			writtenBytes = readVirtualMemory(vaBuffer, localBuffer);
-			writeByteBuffer = fdTable[fd].write(localBuffer, 0, writtenBytes);
-			if (writeByteBuffer == -1){
+	private int handleWrite(int fd, int buffer, int count) {
+		if (fd<0 || fd>15 || fdTable[fd]==null) {return -1;}
+		byte[] pageSizeArray = new byte[pageSize];
+		int totalWrite = 0;
+		int currRead = 0;
+		int currWrite = 0;
+		int leftUnwrite = count;
+		while (leftUnwrite > pageSize) {
+			currRead = readVirtualMemory(buffer,pageSizeArray);
+			currWrite = fdTable[fd].write(pageSizeArray,0,currRead);
+			if(currRead != pageSize || currWrite < 0 || currRead != currWrite){
 				return -1;
 			}
-			if (writeByteBuffer == 0){
-				return totalWrittenBytes;
+			if (currWrite == 0 ) {
+				return totalWrite;
 			}
 
-			totalWrittenBytes += writtenBytes;
-			unwrittenBytes -= writtenBytes;
-			vaBuffer += writtenBytes;
+			buffer += currWrite;
+			totalWrite += currWrite;
+			leftUnwrite -= currWrite;
 		}
-		writtenBytes = readVirtualMemory(vaBuffer, localBuffer, 0, unwrittenBytes);
-		writeByteBuffer = fdTable[fd].write(localBuffer, 0, writtenBytes);
-		if (writeByteBuffer != writtenBytes){
-			return -1;
-		}
-		if (writeByteBuffer == -1){
-			return -1;
-		}
-		totalWrittenBytes += writtenBytes;
-		return totalWrittenBytes;
-	}
+		if (leftUnwrite<0) {return -1;}
+		pageSizeArray = new byte[leftUnwrite];
+		currRead = readVirtualMemory(buffer,pageSizeArray);
+		currWrite = fdTable[fd].write(pageSizeArray,0,currRead);
+		if (currWrite < 0 || currRead!=currWrite) {return -1;}
+		totalWrite += currWrite;
+		leftUnwrite -= currWrite;
+		if (leftUnwrite!=0 || currWrite > pageTable.length*pageSize) {return -1;}
+		return totalWrite;
+}
 
 	/**
 	 * Read a null-terminated string from this process's virtual memory. Read at
@@ -340,81 +330,47 @@ public class UserProcess {
 	 * array.
 	 * @return the number of bytes successfully transferred.
 	 */
-	// public int readVirtualMemory(int vaddr, byte[] data, int offset, int length) {
-	// 	Lib.assertTrue(offset >= 0 && length >= 0
-	// 			&& offset + length <= data.length);
-
-	// 	byte[] memory = Machine.processor().getMemory();
-
-	// 	// for now, just assume that virtual addresses equal physical addresses
-	// 	if (vaddr < 0 || vaddr >= memory.length)
-	// 		return 0;
-
-	// 	int amount = Math.min(length, memory.length - vaddr);
-	// 	System.arraycopy(memory, vaddr, data, offset, amount);
-
-	// 	return amount;
-	// }
 
 	public int readVirtualMemory(int vaddr, byte[] data, int offset, int length) {
-		Lib.assertTrue(offset >= 0 && length >= 0
-				&& offset + length <= data.length);
+		int readleft = 0;
+		int totalRead = 0;
+
+		if(offset < 0 || length < 0 || offset + length > data.length){
+			return totalRead;
+		}
 
 		byte[] memory = Machine.processor().getMemory();
+		if (vaddr < 0 || vaddr > pageTable.length * pageSize) {
+			return totalRead;
+		}
 
-		if (vaddr < 0 || vaddr >= memory.length)
-			return 0;
+		int startVpn = Processor.pageFromAddress(vaddr);
+		if (startVpn >= pageTable.length) {
+			return totalRead;
+		}
+		TranslationEntry entry = pageTable[startVpn];
+		int pageOffset = Processor.offsetFromAddress(vaddr);
+		int physicalAddress = entry.ppn * pageSize + pageOffset;
 
-		int vpn = Processor.pageFromAddress(vaddr);
-		int Offset = Processor.offsetFromAddress(vaddr);
-		int physAddr = -1;
-		TranslationEntry entry = new TranslationEntry();
-		// allocate physical address, scan from the 1st pageTable
-		for (int i = 0; i < pageTable.length; i++){
-			if (pageTable[i].vpn == vpn && pageTable[i].valid){
-				entry = pageTable[i];
-				physAddr = entry.vpn * pageSize + Offset;
+		while (totalRead < length) {
+			if (physicalAddress < 0 || physicalAddress >= memory.length || !entry.valid) {
 				break;
 			}
+
+			readleft = Math.min(length - totalRead, pageSize - pageOffset);
+			System.arraycopy(memory, physicalAddress, data, offset, readleft);
+			vaddr += readleft;
+			int currentVpn = Processor.pageFromAddress(vaddr);
+			if (currentVpn >= pageTable.length) {
+				break;
+			}
+
+			entry = pageTable[Processor.pageFromAddress(vaddr)];
+			pageOffset = Processor.offsetFromAddress(vaddr);
+			physicalAddress = entry.ppn * pageSize + pageOffset;
+			offset += readleft;
+			totalRead += readleft;
 		}
-		entry.used = true;
-
-		if (physAddr < 0 || physAddr >= memory.length){
-			entry.used = false;
-			return 0;
-		}
-
-		int leftUnread = length;
-		int totalRead = 0;
-		int tmpOffset = offset; // the offset of the data
-		int tmpPageOffset = Offset; // the offset of the current page
-		int currVPN = vpn;
-		int currPPN = entry.ppn;
-		int currPhysAddr = physAddr;
-
-		// cases when read-in data overflows the page
-		while(tmpPageOffset + leftUnread > pageSize){
-			System.arraycopy(memory, currPhysAddr, data, tmpOffset, pageSize-tmpPageOffset);
-			totalRead += pageSize - tmpPageOffset;
-			leftUnread -= pageSize - tmpPageOffset;
-			tmpOffset += pageSize - tmpPageOffset;
-
-			// check whether there is another valid page for reading
-			if (++currVPN > pageTable.length) {break;}
-
-			// move on to next page, and set the previous page unused.
-			pageTable[currVPN-1].used = false;
-			if (!pageTable[currVPN].valid) {break;}
-			pageTable[currVPN].used = true;
-			tmpPageOffset = 0;
-			currPPN = pageTable[currVPN].ppn;
-			currPhysAddr = currPPN * pageSize;
-		}
-		// the data should fit in one page now
-		System.arraycopy(memory, currPhysAddr, data, tmpOffset, leftUnread);
-		totalRead += leftUnread;
-		// give up using current page
-		pageTable[currVPN].used = false;
 		return totalRead;
 	}
 
@@ -445,8 +401,9 @@ public class UserProcess {
 	 * memory.
 	 * @return the number of bytes successfully transferred.
 	 */
+
 	public int writeVirtualMemory(int vaddr, byte[] data, int offset, int length) {
-		int amount = 0;
+		int writeleft = 0;
 		int totalWrite = 0;
 
 		if(offset < 0 || length < 0 || offset + length > data.length){
@@ -456,23 +413,22 @@ public class UserProcess {
 		if (vaddr < 0 || vaddr > pageTable.length * pageSize) {
 			return totalWrite;
 		}
-
-		int startVpn = Processor.pageFromAddress(vaddr);	//this variable won't be updated
+		int startVpn = Processor.pageFromAddress(vaddr);
 		if (startVpn >= pageTable.length) {
 			return totalWrite;
 		}
 		TranslationEntry entry = pageTable[startVpn];
 		int pageOffset = Processor.offsetFromAddress(vaddr);
-		int pageAddress = entry.ppn * pageSize + pageOffset;
-		
+		int physicalAddress = entry.ppn * pageSize + pageOffset;
+
 		while (totalWrite < length) {
-			if (pageAddress < 0 || pageAddress >= memory.length || !entry.valid || entry.readOnly) {
+			if (physicalAddress < 0 || physicalAddress >= memory.length || !entry.valid || entry.readOnly) {
 				break;
 			}
 
-			amount = Math.min(pageSize - pageOffset, length - totalWrite);
-			vaddr += amount;
-
+			writeleft = Math.min(length - totalWrite, pageSize - pageOffset);
+			System.arraycopy(data, offset, memory, physicalAddress, writeleft);
+			vaddr += writeleft;
 			int currentVpn = Processor.pageFromAddress(vaddr);
 			if (currentVpn >= pageTable.length) {
 				break;
@@ -480,9 +436,9 @@ public class UserProcess {
 
 			entry = pageTable[Processor.pageFromAddress(vaddr)];
 			pageOffset = Processor.offsetFromAddress(vaddr);
-			pageAddress = entry.ppn * pageSize + pageOffset;
-			offset += amount;
-			totalWrite += amount;
+			physicalAddress = entry.ppn * pageSize + pageOffset;
+			offset += writeleft;
+			totalWrite += writeleft;
 		}
 		return totalWrite;
 	}
@@ -620,8 +576,6 @@ public class UserProcess {
 				}
 				UserKernel.freePageMutex.V();
 
-//				// for now, just assume virtual addresses=physical addresses
-//				section.loadPage(i, vpn);
 			}
 		}
 
@@ -745,13 +699,15 @@ public class UserProcess {
 		// ...and leave it as the top of handleExit so that we
 		// can grade your implementation.
 
-		coff.close();
 		joinLock.acquire();
 		// If this process has a parent, save its status for exiting.
 		if (parentProcess != null) {
 			UserProcess currentProcess = parentProcess.childMap.get(PID);
 			currentProcess = null;
-			parentProcess.childStatus.put(PID, status);
+			if (is_exception)
+				parentProcess.childStatus.put(PID, null);
+			else
+				parentProcess.childStatus.put(PID, status);
 		}
 		// Update all child processes of current process and set their parent to be null
 		// since current process is existing.
@@ -770,6 +726,7 @@ public class UserProcess {
 
 		// Free virtual memory used by current process.
 		unloadSections();
+		coff.close();
 
 		// Wake up parent process.
 		is_exit = true;
@@ -908,7 +865,9 @@ public class UserProcess {
 		default:
 			Lib.debug(dbgProcess, "Unexpected exception: "
 					+ Processor.exceptionNames[cause]);
-			Kernel.kernel.terminate();
+			is_exception = true;
+			handleExit(cause);
+			// Kernel.kernel.terminate();
 			Lib.assertNotReached("Unexpected exception");
 		}
 	}
@@ -947,6 +906,8 @@ public class UserProcess {
 	private boolean is_exit = false;
 	private Condition joinCondition;
 	private Lock joinLock = new Lock();
+
+	private boolean is_exception = false;
 
 	private int initialPC, initialSP;
 
