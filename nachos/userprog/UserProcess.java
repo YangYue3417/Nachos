@@ -92,7 +92,7 @@ public class UserProcess {
 		
 		if(index == 17) return -1;
 		
-		OpenFile file = ThreadedKernel.fileSystem.open(fileName, true);
+		OpenFile file = ThreadedKernel.fileSystem.open(fileName, false);
 		if(file == null) {
 			return -1;
 		}
@@ -378,7 +378,7 @@ public class UserProcess {
 		for (int i = 0; i < pageTable.length; i++){
 			if (pageTable[i].vpn == vpn && pageTable[i].valid){
 				entry = pageTable[i];
-				physAddr = entry.vpn * pageSize + Offset;
+				physAddr = entry.ppn * pageSize + Offset;
 				break;
 			}
 		}
@@ -400,12 +400,12 @@ public class UserProcess {
 		// cases when read-in data overflows the page
 		while(tmpPageOffset + leftUnread > pageSize){
 			System.arraycopy(memory, currPhysAddr, data, tmpOffset, pageSize-tmpPageOffset);
-			totalRead += pageSize - tmpPageOffset;
-			leftUnread -= pageSize - tmpPageOffset;
-			tmpOffset += pageSize - tmpPageOffset;
+			totalRead += (pageSize - tmpPageOffset);
+			leftUnread -= (pageSize - tmpPageOffset);
+			tmpOffset += (pageSize - tmpPageOffset);
 
 			// check whether there is another valid page for reading
-			if (++currVPN > pageTable.length) {break;}
+			if (++currVPN >= pageTable.length) {break;}
 
 			// move on to next page, and set the previous page unused.
 			pageTable[currVPN-1].used = false;
@@ -487,14 +487,14 @@ public class UserProcess {
 		for (int i = 0; i < pageTable.length; i++){
 			if (pageTable[i].vpn == vpn && pageTable[i].valid){
 				entry = pageTable[i];
-				physAddr = entry.vpn * pageSize + Offset;
+				physAddr = entry.ppn * pageSize + Offset;
 				break;
 			}
 		}
 		if(entry.readOnly){return 0;}
 
 		entry.used = true;
-		physAddr = entry.vpn * pageSize + Offset;
+		physAddr = entry.ppn * pageSize + Offset;
 		if (physAddr < 0 || physAddr > memory.length || !entry.valid){
 			entry.used = false;
 			return 0;
@@ -765,7 +765,7 @@ public class UserProcess {
 		UserProcess childProcess = childMap.get(pid);
 		if (childProcess == null)
 			return -1;
-
+		childProcess.thread.join();
 		// Acquire lock for join. Put this process to sleep until it is waken up by its child process.
 		joinLock.acquire();
 		while(!is_exit)
@@ -815,11 +815,13 @@ public class UserProcess {
 		childMap = null;
 
 		// Close all opened files.
-		for (int fd = 0; fd < fdTable.length; fd++)
-			if (fd >= 0 && fd < fdTable.length)
-				if (fdTable[fd] != null)
+		for (int fd = 0; fd < fdTable.length; fd++) {
+			if (fd >= 0 && fd < fdTable.length) {
+				if (fdTable[fd] != null) {
 					handleClose(fd);
-
+				}
+			}
+		}
 		// Free virtual memory used by current process.
 		unloadSections();
 
@@ -830,8 +832,9 @@ public class UserProcess {
 
 		// Check if we should terminate the machine.
 		staticVarLock.acquire();
-		if (--numProcesses == 0)
+		if (--numProcesses == 0) {
 			Kernel.kernel.terminate();
+		}
 		staticVarLock.release();
 
 		nachos.threads.KThread.finish();
