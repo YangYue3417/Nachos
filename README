@@ -113,6 +113,75 @@ Implement handlers for create, open, read, write, close, unlink
 
 Use the basic testcases to verify the basic functions. Fix the write10 and write4 problems.
 
+Yang Yue | A53301503 | y5yue@ucsd.edu
+Implementations:
+Part1:
+handleRead(int fd, int buffer, int count)
+--Parameters--
+int fd -- file Descriptor
+int buffer -- offset of data needed to be read
+int count -- length of data needed to be read
+--Function Instruction--
+calls TransitionEntry.read() to copy each page's data
+calls writeVirtualMemory() to implement cross-page data-copy from file to memory
+--return--
+int totalRead -- number of bytes that has been successfully read
+(if any exception or error occurs, return -1)
+
+handleWrite(int fd, int buffer, int count)
+--Parameters--
+int fd -- file Descriptor
+int buffer -- offset of data needed to be written into file
+int count -- length of data needed to be written into file
+--Function Instruction--
+calls readVirtualMemory() to implement cross-page data-copy from file to memory
+calls TransitionEntry.write() to copy each page's data
+--return--
+int totalWrite -- number of bytes that has been successfully written to file.
+(if any exception or error occurs, return -1)
+
+Part2:
+loadSections()
+--Parameters--
+
+--Function Instruction--
+create a new page table for each created process, attach each .coff file descriptor
+use a semaphore to implement synchronization function
+use a linked list to track every free page inside user kernel
+--return--
+boolean --indicates that whether the page table has been built successfully
+
+unloadSections()
+--Parameters--
+
+--Function Instruction--
+unload the page table attached with a process
+use a semaphore to implement synchronization function
+free the linked list of that page table tracking
+--return--
+
+
+readVirtualMemory(int vaddr, byte[] data, int offset, int length)
+--Parameters--
+int vaddr -- the first byte of virtual memory to read
+byte[]data -- the array where the data will be stored
+int offset -- the first byte to write in the array
+int length --- the number of bytes to transfer from virtual memory to the array
+
+--Function Instruction--
+calls Processor.pageFromAddress() to acquire vpn
+calls Processor.offsetFromAddress() to acquire page offset from
+implements read from multiple continuous pages
+enables multiprocessing
+
+--return--
+int totalRead -- the number of bytes successfully transferred
+
+
+writeVirtualMemory(int vaddr, byte[] data, int offset, int length)
+--
+is similar to readVirtualMemroy()
+
 Shang Wang | A53320852 | ShangWangUCSD
 Finish part 3 and related test cases.
 
