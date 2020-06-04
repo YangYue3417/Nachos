@@ -94,8 +94,24 @@ We create two threads (Thread 1 and 3) using instance 1 and the other two thread
 5. A thread only returns from exchange when another thread synchronizes with it.
 This time, we create two threads (Thread 1 and 2) using different tags. Then, let them execute the Rendezvous function. According to the instruction, the test case will not give any return values since both of Thread 1 and Thread 2 are in the wait state. So the program will not finish execution. To avoid this, we can simply changing the sleep function in the 49th line of Rendezvous class to sleepFor(sleepTime) function. sleepTime is a integer while can be manually set.
 
----------------------------------------------------------------------------------
-PART 2
+------------------------------------------------------ PROJECT 2 ------------------------------------------------------
+Haoyang Ding | A53320920 | KKDJOSEPH: 
+Finish part 1 and related testcase
+Complete writeVirtualMemory() and readVirtualMemory() with Yang Yue
+
+Part 1:
+Implement handlers for create, open, read, write, close, unlink
+1. Build a fdTable[] for file descriptors. Everytime check the file descriptor whether it is between [0,15].
+
+2. Create()/Open(): Get the filename and open the file. The difference between these two functions is the file status. True for Create(), False for Open()
+
+3. Close(): close the file and set the fdTable[fd]=null
+
+4. Unlink(): Get the filename, remove the file from the filesystem, check whether it is successed.
+
+5. readVirtualMemory()/writeVirtualMemory(): set the parameter update strategy. Make sure that when the length for read/write is larger than the pagesize, it could reach the next page.
+
+Use the basic testcases to verify the basic functions. Fix the write10 and write4 problems.
 
 Shang Wang | A53320852 | ShangWangUCSD
 Finish part 3 and related test cases.
@@ -104,7 +120,6 @@ Part3:
 Implement handlers for system calls including exec, join, and exit. We implement bullet proof for all three handlers.
 
 1. We used a integer and related lock stored in the static  memory to create unique PID for each process. The handleExec() handles exec syscall and executes a given coff file in a child process with a unique pid assigned to it. 
-
 
 2. The handleJoin() handles join syscall and put current process to sleep until the child process finishes. We have a map for each process to tracking its child processes and another map to record the return value for each process. Once a process is woken by its child process, it writes the return value of the child process to the specific memory if necessary.
 
