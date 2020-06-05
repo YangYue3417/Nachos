@@ -1,0 +1,80 @@
+------[ Thu Jun  4 11:47:20 2020 ]------
+PASS : UCSDExitGrader.read-abc-1.conf : read-abc-1: Test reading short file w/ length less than file size
+PASS : UCSDExitGrader.read-abc-2.conf : read-abc-2: Test reading short file w/ length equal to file size
+PASS : UCSDExitGrader.read-abc-3.conf : read-abc-3: Test reading short file w/ length greater than file size
+PASS : UCSDExitGraderWithStdin.read-abc-4.conf : read-abc-4: Read in 10 characters, "abcdefghij", from stdin
+PASS : UCSDExitGrader.read-abc-5.conf : read-abc-5: Test reading small amount repeatedly from a file
+FAIL : UCSDExitGrader.read-err-badbuf-1.conf : read-err-badbuf-1: Test handling invalid buf. Read shall return -1
+PASS : UCSDExitGrader.read-err-badlen.conf : read-err-badlen: Test handling invalid length. Read shall return -1
+PASS : UCSDExitGrader.read-err-fd-1.conf : read-err-fd-1: Test handling invalid file descriptor. Read shall return -1
+PASS : UCSDExitGrader.read-err-fd-2.conf : read-err-fd-2: Test handling out of range file descriptor. Read shall return -1
+PASS : UCSDExitGrader.read-err-fd-3.conf : read-err-fd-3: Test handling invalid buf, writing to readonly page. Read shall return -1
+PASS : UCSDExitGrader.read-long.conf : read-long: Test reading large amount from file
+PASS : UCSDExitGrader.write-abc-1.conf : write-abc-1: Test writing small amount w/ length less than buf size
+PASS : UCSDExitGrader.write-abc-2.conf : write-abc-2: Test writing small amount w/ length equal to buf size
+PASS : UCSDExitGrader.write-abc-3.conf : write-abc-3: Test writing small amount to stdout
+PASS : UCSDExitGrader.write-abc-4.conf : write-abc-4: Test writing small amount repeatedly to a file
+PASS : UCSDExitGrader.write-err-badbuf-1.conf : write-err-badbuf-1: Test handling invalid buf. Read shall return -1
+PASS : UCSDExitGrader.write-err-badlen.conf : write-err-badlen: Test handling invalid length. Read shall return -1
+PASS : UCSDExitGrader.write-err-fd-1.conf : write-err-fd-1: Test handling invalid file descriptor when calling write. Read shall return -1
+PASS : UCSDExitGrader.write-err-fd-2.conf : write-err-fd-2: Test handling out of range file descriptor when calling write. Read shall return -1
+PASS : UCSDExitGrader.write-err-fd-3.conf : write-err-fd-3: Test handling out of range file descriptor when calling write. Read shall return -1
+PASS : UCSDExitGrader.write-long.conf : write-long: Test writing large amount to file
+PASS : UCSDExitGrader.write1.conf : write1: Write a string to stdout, one byte at a time
+PASS : UCSDExitGrader.write10.conf : write10: Test the write system call under a variety of good and bad conditions
+PASS : UCSDExitGrader.open1.conf : open1: Test open single file and get valid fd
+PASS : UCSDExitGrader.open2.conf : open2: Test open a file that does not exist
+PASS : UCSDExitGrader.open3.conf : open3: Check graceful failure of open when OpenFileLimit exceeded
+PASS : UCSDExitGrader.open4.conf : open4: Check that duplicate fd is not given for two different files
+PASS : UCSDExitGrader.open5.conf : open5: Check that duplicate fd is not given for same file
+PASS : UCSDExitGrader.open6.conf : open6: Check stdin and stdout not messed with i.e. fd is not assigned to new file
+PASS : UCSDExitGrader.open7.conf : open7: Check duplicate fd not given for many files
+PASS : UCSDExitGrader.creat1.conf : creat1: Test creat single file and get valid fd
+PASS : UCSDExitGrader.creat2.conf : creat2: Test creat a file that does not exist
+PASS : UCSDExitGrader.creat3.conf : creat3: Check graceful failure of open when OpenFileLimit exceeded
+PASS : UCSDExitGrader.creat4.conf : creat4: Check that duplicate fd is not given for two different files
+PASS : UCSDExitGrader.creat5.conf : creat5: Check that duplicate fd is not given for same file
+PASS : UCSDExitGrader.creat6.conf : creat6: Check stdin and stdout not messed with i.e. fd is not assigned to new file
+PASS : UCSDExitGrader.creat7.conf : creat7: Check duplicate fd not given for many files
+PASS : UCSDExitGrader.unlink1.conf : unlink1: Test unlink single file and get status
+PASS : UCSDExitGrader.unlink2.conf : unlink2: Test unlink on invalid file
+PASS : UCSDExitGrader.unlink3.conf : unlink3: Test unlink single file and then try to open it, should fail
+PASS : UCSDExitGrader.unlink4.conf : unlink4: open file, then unlink, read to make sure we can still read
+PASS : UCSDExitGrader.close1.conf : close1: Test close bogus file descriptor returns
+PASS : UCSDExitGrader.close2.conf : close2: Test close on valid fd assuming open works
+PASS : UCSDExitGrader.close3.conf : close3: Test to close stdin
+PASS : UCSDExitGrader.close4.conf : close4: Test to close stdout
+FAIL : UCSDExitGrader.close5.conf : close5: Test to close stdin/stdout and open 15 files
+PASS : UCSDExecGrader1.conf : exec1: Execute a simple program (one child)
+PASS : UCSDExecGrader2.conf : exec2: Execute multiple programs (three children)
+PASS : UCSDExecGrader3.conf : exec3: Execute an invalid program
+PASS : UCSDExecGrader4.conf : exec4: Execute a bad program (out of memory)
+PASS : UCSDExecGrader6.conf : exec6: Execute with arguments
+PASS : UCSDExitGrader.exit1.conf : exit1: Basic single process exit testcase
+FAIL : UCSDParentChildExitGrader.exit2_test_memory_free.conf : exit2: Test if process is freeing pages correctly on exit
+FAIL : UCSDParentChildExitGrader.exit3_test_file_close.conf : exit3: Test if process is closing the open files on exit
+PASS : UCSDParentChildExitGrader.exit4_test_join_status_simple.conf : exit4: Test if exit status of child is returned to parent via join - single child
+PASS : UCSDParentChildExitGrader.exit5_test_join_status.conf : exit5: Test if exit status of child is returned to parent via join - multiple children
+PASS : UCSDParentChildGrader.join1.conf : join1: After exec-ing the child; it waits for the child to exit.
+PASS : UCSDParentChildGrader.join2.conf : join2: Join to child that has not exited yet
+PASS : UCSDParentChildJoinGrader1.join3.conf : join3: Call join on child's child which counts as joining on a process that is not a child of the current process
+PASS : UCSDParentChildJoinGrader2.join4.conf : join4: Joins on a child that exits due to an unhandled exception
+PASS : UCSDParentChildJoinGrader.join5.conf : join5: Exec 3 children and then join all 3
+PASS : UCSDMultiProgGrader.3.conf : multiprog3: Check process creation and execute
+PASS : UCSDMultiProgGrader.5.conf : multiprog5: Pocess creation with argv > 1 page should fail
+PASS : UCSDMultiProgGrader.6.conf : multiprog6: check if process creation fails when memory is out of pages
+PASS : UCSDMultiProgGrader.7.conf : multiprog7: Read at Invalid virtual address should fail
+PASS : UCSDMultiProgGrader.8.conf : multiprog8: Write at Invalid virtual address should fail
+PASS : UCSDMultiProgGrader.9.conf : multiprog9: Free list correctness is not affected
+PASS : UCSDMultiProgGrader.10.conf : multiprog10: Check Page Table Size
+PASS : UCSDMultiProgGrader.11.conf : multiprog11: Read 16 bytes from a random page
+PASS : UCSDMultiProgGrader.12.conf : multiprog12: Read 1024 bytes from a random page
+PASS : UCSDMultiProgGrader.13.conf : multiprog13: Read 3719 bytes from a random page
+PASS : UCSDMultiProgGrader.20.conf : multiprog20: Write 16 bytes to a random page
+PASS : UCSDMultiProgGrader.21.conf : multiprog21: Write 1024 bytes to a random page
+PASS : UCSDMultiProgGrader.22.conf : multiprog22: Write 3719 bytes to a random page
+FAIL : UCSDParentChildGrader.pipe1.conf : pipe1: Creates a pipe, child and writes a message in chunks
+FAIL : UCSDExitGrader.pipe3.conf : pipe3: Writes to multiple pipes
+FAIL : UCSDParentChildGrader.pipe_creat1.conf : pipe_creat1: Create two pipes with same name in parent
+FAIL : UCSDParentChildExitGrader.pipe_creat2.conf : pipe_creat2: Stress Test
+Autograde Results: 70 / 78
