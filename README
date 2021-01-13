@@ -1,6 +1,3 @@
-Haoyang Ding | A53320920 | KKDJOSEPH: 
-Finish part 1,2,3,4
-
 Part1: 
 waitUntil(long x): 
 1. If the wait-time<=0, return.
@@ -68,15 +65,9 @@ cancel(KThread thread)
 Part4 Test:
 It's inside the part3's testcases.
 
-Yang Yue | A53301503 | YangYue3417:
 Part1 Test:
 1. testCase4: test the alarm for situation of setting timer for large negative values.
 
-Other unsuccessful test cases were commented by my self :(
-
-Will participant more on Proj2, agreed by other teammates.
-
-Shang Wang | A53320852 | ShangWangUCSD
 Finish part 5 and related test cases.
 
 Part5:
@@ -95,7 +86,6 @@ We create two threads (Thread 1 and 3) using instance 1 and the other two thread
 This time, we create two threads (Thread 1 and 2) using different tags. Then, let them execute the Rendezvous function. According to the instruction, the test case will not give any return values since both of Thread 1 and Thread 2 are in the wait state. So the program will not finish execution. To avoid this, we can simply changing the sleep function in the 49th line of Rendezvous class to sleepFor(sleepTime) function. sleepTime is a integer while can be manually set.
 
 ------------------------------------------------------ PROJECT 2 ------------------------------------------------------
-Haoyang Ding | A53320920 | KKDJOSEPH: 
 Finish part 1 and related testcase
 Complete writeVirtualMemory() and readVirtualMemory() with Yang Yue
 
@@ -113,7 +103,6 @@ Implement handlers for create, open, read, write, close, unlink
 
 Use the basic testcases to verify the basic functions. Fix the write10 and write4 problems.
 
-Yang Yue | A53301503 | y5yue@ucsd.edu
 Implementations:
 Part1:
 handleRead(int fd, int buffer, int count)
@@ -182,7 +171,6 @@ writeVirtualMemory(int vaddr, byte[] data, int offset, int length)
 --
 is similar to readVirtualMemroy()
 
-Shang Wang | A53320852 | ShangWangUCSD
 Finish part 3 and related test cases.
 
 Part3:
